@@ -2,3 +2,6 @@
 psycopg2-binary==2.9.9
 watchfiles==0.21.0
 black==24.3.0
+mixer
+pytest
+pytest-django
