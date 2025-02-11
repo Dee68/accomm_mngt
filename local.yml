@@ -1,0 +1,79 @@
+services:
+  api: &api
+    build:
+      context: .
+      dockerfile: ./docker/local/django/Dockerfile
+    image: accomm_prod_api
+    container_name: accomm_prod_api
+    volumes:
+      - .:/app:z
+      - ./staticfiles:/app/staticfiles:z
+    ports:
+      - "8000:8000" # Uncomment if you need external access
+    expose:
+      - "8000"
+    env_file:
+      - ./.envs/.env.local
+    depends_on:
+      postgres:
+        condition: service_healthy # Waits for healthcheck
+      mailpit:
+        condition: service_started
+    command: /start
+    networks:
+      - accomm_prod_nw
+
+  postgres:
+    build:
+      context: .
+      dockerfile: ./docker/local/postgres/Dockerfile
+    image: accomm_prod_postgres
+    container_name: accomm_prod_postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - accomm_prod_postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.envs/.env.local
+    networks:
+      - accomm_prod_nw
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "sh -c 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}'",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  mailpit:
+    image: docker.io/axllent/mailpit:v1.15
+    container_name: accomm_prod_mailpit
+    ports:
+      - "8025:8025" # web ui
+      - "1025:1025" # smtp
+    restart: unless-stopped
+    volumes:
+      - accomm_prod_mailpit_data:/data
+
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://localhost:8025"]
+    #   interval: 30s
+    #   timeout: 5s
+    #   retries: 5
+    environment:
+      MP_MAX_MESSAGES: 5000
+      MP_DATA_FILE: /data/mailpit.db
+      MP_SMTP_AUTH_ACCEPT_ANY: 1
+      MP_SMTP_AUTH_ALLOW_INSECURE: 1
+    networks:
+      - accomm_prod_nw
+
+networks:
+  accomm_prod_nw:
+    external: true # Use manually created network
+
+volumes:
+  accomm_prod_postgres_data: {}
+  accomm_prod_mailpit_data: {}
