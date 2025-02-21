@@ -17,7 +17,27 @@ Including another URLconf
 from django.contrib import admin
 from django.conf import settings
 from django.urls import path
+from drf_yasg import openapi
+from drf_yasg.views import get_schema_view
+from rest_framework import permissions
+
+Schema_view = get_schema_view(
+    openapi.Info(
+        title="Accommodation Management API",
+        default_version="v1",
+        description="An Accommodation management API for accommodation centre",
+        contact=openapi.Contact(email="admin@golden-ventures.com"),
+        license=openapi.License(name="MIT License")
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
+)
 
 urlpatterns = [
+    path("redoc/", Schema_view.with_ui("redoc",cache_timeout=0)),
     path(settings.ADMIN_URL, admin.site.urls),
 ]
+
+admin.site.site_header = "Accommodation Centre Admin"
+admin.site.site_title = "Accommodation Admin Portal"
+admin.site.index_title = "Welcome to Accommodation Admin Portal"
