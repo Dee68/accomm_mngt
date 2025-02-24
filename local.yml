@@ -8,8 +8,8 @@ services:
     volumes:
       - .:/app:z
       - ./staticfiles:/app/staticfiles:z
-    ports:
-      - "8000:8000" # Uncomment if you need external access
+    # ports:
+    #   - "8000:8000" # Uncomment if you need external access
     expose:
       - "8000"
     env_file:
@@ -22,6 +22,11 @@ services:
     command: /start
     networks:
       - accomm_prod_nw
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   postgres:
     build:
@@ -76,11 +81,30 @@ services:
       dockerfile: ./docker/local/Dockerfile
     container_name: accomm_client
     image: accomm_client
-    ports:
-      - "3000:3000"
+    # ports:
+    #   - "3000:3000"
+    expose:
+      - "3000"
     volumes:
       - ./client:/app
       - /app/node_modules
+    networks:
+      - accomm_prod_nw
+
+  nginx:
+    build:
+      context: ./docker/local/nginx
+      dockerfile: Dockerfile
+    restart: always
+    container_name: accomm_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./staticfiles:/app/staticfiles:z
+      - logs_store:/var/log/nginx
+    depends_on:
+      api:
+        condition: service_healthy
     networks:
       - accomm_prod_nw
 
@@ -91,3 +115,4 @@ networks:
 volumes:
   accomm_prod_postgres_data: {}
   accomm_prod_mailpit_data: {}
+  logs_store: {}

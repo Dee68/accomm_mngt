@@ -17,6 +17,8 @@ SITE_NAME = getenv("SITE_NAME")
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = getenv("DJANGO_SECRET_KEY","1mXdITfSBRkJuodNHdvYniIjDCCsYNWq-VX3fwDo4dp7t0R8uGs")
 
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8080"]
+
 DEBUG = True
 
 ALLOWED_HOSTS = ["localhost","127.0.0.1","0.0.0.0"]

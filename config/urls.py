@@ -20,6 +20,7 @@ from django.urls import path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
+from django.http import JsonResponse
 
 Schema_view = get_schema_view(
     openapi.Info(
@@ -33,8 +34,12 @@ Schema_view = get_schema_view(
     permission_classes=[permissions.AllowAny],
 )
 
+def health_check(request):
+    return JsonResponse({"status": "healthy"})
+
 urlpatterns = [
     path("redoc/", Schema_view.with_ui("redoc",cache_timeout=0)),
+    path("health/",health_check),
     path(settings.ADMIN_URL, admin.site.urls),
 ]
 
