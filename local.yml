@@ -12,16 +12,23 @@ services:
     #   - "8000:8000" # Uncomment if you need external access
     expose:
       - "8000"
+      - "5555:5555"
     env_file:
-      - ./.envs/.env.local
+      - .envs/.env.local
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.settings.local
     depends_on:
       postgres:
         condition: service_healthy # Waits for healthcheck
       mailpit:
         condition: service_started
+      redis:
+        condition: service_started
+
     command: /start
     networks:
       - accomm_prod_nw
+
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8000/health/"]
       interval: 10s
@@ -62,11 +69,6 @@ services:
     volumes:
       - accomm_prod_mailpit_data:/data
 
-    # healthcheck:
-    #   test: ["CMD", "curl", "-f", "http://localhost:8025"]
-    #   interval: 30s
-    #   timeout: 5s
-    #   retries: 5
     environment:
       MP_MAX_MESSAGES: 5000
       MP_DATA_FILE: /data/mailpit.db
@@ -90,6 +92,46 @@ services:
       - /app/node_modules
     networks:
       - accomm_prod_nw
+
+  redis:
+    image: redis:7.0-alpine3.19
+    command: redis-server --appendonly yes
+    container_name: accomm_redis
+    volumes:
+      - accomm_redis_prod_data:/data
+    networks:
+      - accomm_prod_nw
+
+  celeryworker:
+    <<: *api
+    image: accomm_prod_celeryworker
+    container_name: accomm_prod_celeryworker
+    command: /start-celeryworker
+    healthcheck:
+      disable: true
+
+  celerybeat:
+    <<: *api
+    image: accomm_prod_celerybeat
+    container_name: accomm_prod_celerybeat
+    command: /start-celerybeat
+    healthcheck:
+      disable: true
+
+  flower:
+    <<: *api
+    image: accomm_prod_flower
+    container_name: accomm_prod_flower
+    ports:
+      - "5555:5555"
+    command: /start-flower
+    healthcheck:
+      disable: true
+    # healthcheck:
+    #   test: ["CMD", "curl", "-f", "http://0.0.0.0:5555/"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 5
 
   nginx:
     build:
@@ -116,3 +158,4 @@ volumes:
   accomm_prod_postgres_data: {}
   accomm_prod_mailpit_data: {}
   logs_store: {}
+  accomm_redis_prod_data: {}

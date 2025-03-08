@@ -24,12 +24,18 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR ${APP_HOME}
 
+# RUN apt-get update && apt-get install --no-install-recommends -y \
+#     libpq-dev \
+#     gettext \
+#     sudo git bash-completion nano ssh \
+#     && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+#     && rm -rf /var/lib/apt/lists/*
 RUN apt-get update && apt-get install --no-install-recommends -y \
     libpq-dev \
     gettext \
     sudo git bash-completion nano ssh \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* && apt-get clean
+
 
 RUN addgroup --system django && \
     adduser --system --ingroup django django && \
@@ -45,7 +51,26 @@ RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* && \
 COPY ./docker/local/django/entrypoint.sh /entrypoint
 COPY ./docker/local/django/start.sh /start
 
-RUN chmod +x /entrypoint /start
+
+# COPY --chmod=+x ./docker/local/django/entrypoint.sh /entrypoint
+# COPY --chmod=+x ./docker/local/django/start.sh /start
+
+RUN chmod 0755 /entrypoint /start
+
+
+COPY --chown=django:django ./docker/local/django/celery/worker/start.sh /start-celeryworker
+RUN sed -i 's/\r$//g' /start-celeryworker
+RUN chmod 0755 /start-celeryworker
+
+
+COPY --chown=django:django ./docker/local/django/celery/beat/start.sh /start-celerybeat
+RUN sed -i 's/\r$//g' /start-celerybeat
+RUN chmod 0755 /start-celerybeat
+
+COPY --chown=django:django ./docker/local/django/celery/flower/start.sh /start-flower
+RUN sed -i 's/\r$//g' /start-flower
+RUN chmod 0755 /start-flower
+
 
 RUN chown django:django ${APP_HOME}
 
