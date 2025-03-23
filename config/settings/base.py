@@ -47,6 +47,7 @@ THIRD_PARTY_APPS = ['rest_framework',
                     'djcelery_email',
                     'cloudinary',
                     'django_celery_beat',
+                    'rest_framework_simplejwt.token_blacklist',
 ]
 
 LOCAL_APPS = ["core_apps.issues",
@@ -244,7 +245,7 @@ DJOSER = {
     "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": getenv("REDIRECT_URIS","").split(","),
     "SERIALIZERS":{
         "user_create":"core_apps.user.serializers.CreateUserSerializer",
-    }
+    } 
 }
 
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = getenv("GOOGLE_CLIENT_ID")

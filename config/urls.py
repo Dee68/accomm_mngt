@@ -16,7 +16,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.conf import settings
-from django.urls import path
+from django.urls import path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
 from rest_framework import permissions
@@ -41,6 +41,8 @@ urlpatterns = [
     path("redoc/", Schema_view.with_ui("redoc",cache_timeout=0)),
     path("health/",health_check),
     path(settings.ADMIN_URL, admin.site.urls),
+    path("api/v1/auth/", include("djoser.urls")),
+    path("api/v1/auth/", include("core_apps.users.urls")),
 ]
 
 admin.site.site_header = "Accommodation Centre Admin"
