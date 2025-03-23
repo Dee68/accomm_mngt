@@ -86,24 +86,29 @@ class CustomTokenRefreshView(TokenRefreshView):
         return refresh_res
 
 
-
-
-
 class CustomProviderAuthView(ProviderAuthView):
-    def post(self,request:Request,*args,**kwargs)->Response:
-        provider_res = super().post(request,**args, **kwargs)
+    def post(self, request, *args, **kwargs) -> Response:
+        logger.info("Handling Google OAuth login.")
+
+        # 🔹 Call super().post() with only `request` and `kwargs`
+        provider_res = super().post(request, **kwargs)
+
+        # 🔹 Handle successful authentication
         if provider_res.status_code == status.HTTP_201_CREATED:
             access_token = provider_res.data.get("access")
             refresh_token = provider_res.data.get("refresh")
+
             if access_token and refresh_token:
-                set_auth_cookies(provider_res,access_token=access_token,refresh_token=refresh_token)
-                provider_res.data.pop("access",None)
-                provider_res.data.pop("refresh",None)
-                provider_res.data["message"] = "You are logged in Successful."
+                set_auth_cookies(provider_res, access_token=access_token, refresh_token=refresh_token)
+                provider_res.data.pop("access", None)
+                provider_res.data.pop("refresh", None)
+                provider_res.data["message"] = "You are logged in successfully."
             else:
                 provider_res.data["message"] = "Access or Refresh token not found in provider response."
-                logging.error("Access or Refresh token not found in provider response data.")
+                logger.error("Access or Refresh token missing in provider response.")
+
         return provider_res
+
     
 
 
