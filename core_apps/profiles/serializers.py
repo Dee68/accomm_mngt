@@ -1,0 +1,70 @@
+from django_countries.fields import CountryField
+from rest_framework import serializers
+
+from .models import Profile
+
+class ProfileSerializer(serializers.ModelSerializer):
+    first_name = serializers.ReadOnlyField(source="user.first_name")
+    last_name = serializers.ReadOnlyField(source="user.last_name")
+    full_name = serializers.ReadOnlyField(source="user.get_full_name")
+    username = serializers.CharField(source="user.username")
+    country_field = CountryField()
+    avatar = serializers.SerializerMethodField()
+    date_joined = serializers.DateTimeField(source="user.date_joined",read_only=True)
+
+    class Meta:
+        model = Profile
+        fields = ["id",
+                  "slug",
+                  "first_name",
+                  "last_name",
+                  "full_name",
+                  "username",
+                  "gender",
+                  "country_field",
+                  "city_of_origin",
+                  "bio",
+                  "occupation",
+                  "reputation",
+                  "date_joined",
+                  "avatar"]
+        
+    def get_avatar(self,obj:Profile)->str | None:
+        try:
+            return obj.avatar.url
+        except AttributeError:
+            return None
+        
+class UpdateProfileSerializer(serializers.ModelSerializer):
+    first_name = serializers.CharField(source="user.first_name")
+    last_name = serializers.CharField(source="user.last_name")
+    full_name = serializers.SerializerMethodField()
+    username = serializers.CharField(source="user.username")
+    country_of_origin = CountryField()
+
+    class Meta:
+        model = Profile
+        fields = [
+                  "first_name",
+                  "last_name",
+                  "full_name",
+                  "username",
+                  "gender",
+                  "country_field",
+                  "city_of_origin",
+                  "bio",
+                  "occupation",
+                  "phone_number"
+                  ]
+        
+    def get_full_name(self, obj):
+        """Fetches full name from the user model property"""
+        if obj.user:
+            return obj.user.get_full_name
+        return None
+        
+class AvatarUploadSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ["avatar"]
+    
