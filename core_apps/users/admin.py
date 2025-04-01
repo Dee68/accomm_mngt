@@ -27,6 +27,6 @@ class UserAdmin(BaseUserAdmin):
         (_("Important Dates"),{"fields":("last_login","date_joined")})
     )
     add_fieldsets = (
-        (None,{"classes":("wide",), "fields":("username","email","first_name","last_name","password1","password2"),} )
+        (None,{"classes":("wide",), "fields":("username","email","first_name","last_name","password1","password2"),} ),
     )
     

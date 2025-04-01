@@ -21,7 +21,7 @@ class TimeStampedModel(models.Model):
 
 class ContentView(TimeStampedModel):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name=_("Content Type"))
-    object_id = models.PositiveIntegerField(verbose_name=_("Object ID"))
+    object_id = models.CharField(max_length=36,verbose_name=_("Object ID"))
     content_object = GenericForeignKey("content_type", "object_id")
     user = models.ForeignKey(
         User,
@@ -46,7 +46,7 @@ class ContentView(TimeStampedModel):
     def record_view(cls,content_object,user:User,viewer_ip:str)->None:
         content_type = ContentType.objects.get_for_model(content_object)
         try:
-            view,created = cls.objects.get_or_create(content_type=content_type,object_id=content_object.pkid, defaults={
+            view,created = cls.objects.get_or_create(content_type=content_type,object_id=str(content_object.pkid), defaults={
                 "user":user,"viewer_ip":viewer_ip
             })
         except IntegrityError:
