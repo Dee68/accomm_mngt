@@ -23,19 +23,7 @@ def send_issue_confirmation_email(issue:Issue)->None:
     except Exception as e:
         logger.error(f"Failed to send confirmation email for issue '{issue.title}':{e}", exc_info=True)
 
-# def send_issue_resolved_email(issue:Issue)->None:
-#     try:
-#         subject = f"Issue Resolved: {issue.title}"
-#         context = {"issue": issue,"site_name":SITE_NAME}
-#         html_email = render_to_string("emails/issue_resolved_notification.html", context)
-#         text_email = strip_tags(html_email)
-#         from_email = DEFAULT_FROM_EMAIL
-#         to = [issue.reported_by.email]
-#         email = EmailMultiAlternatives(subject,text_email,from_email,to)
-#         email.attach_alternative(html_email, "text/html")
-#         email.send()
-#     except Exception as e:
-#         logger.error(f"Failed to send resolution email for issue '{issue.title}':{e}", exc_info=True)
+
 
 def send_resolution_email(issue:Issue)->None:
     try:

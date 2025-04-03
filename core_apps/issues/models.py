@@ -10,7 +10,7 @@ from django.utils.translation import gettext_lazy as _
 
 from config.settings.local import SITE_NAME, DEFAULT_FROM_EMAIL
 from core_apps.common.models import TimeStampedModel
-from core_apps.apartments.models import Apartment
+from core_apps.apartments.models import Apartment 
 
 User = get_user_model()
 
