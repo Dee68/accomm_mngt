@@ -1,10 +1,12 @@
-FROM docker.io/node:20.11-alpine3.18 as base
+FROM docker.io/node:20.11-alpine3.18 AS base
 
-FROM base as node-build-stage
+FROM base AS node-build-stage
 
 RUN apk add --no-cache libc6-compat
 
-COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
+WORKDIR /app
+
+COPY package*.json yarn.lock* pnpm-lock.yaml* ./
 
 RUN \
   if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
@@ -13,25 +15,15 @@ RUN \
   else echo "Lockfile not found." && exit 1; \
   fi
 
-FROM base as node-run-stage
-
-ARG APP_HOME=/app
-WORKDIR ${APP_HOME}
-
-# Copy dependencies from build stage
-#COPY --from=node-build-stage /app/node_modules ./node_modules
-
-COPY --from=node-build-stage /node_modules ./node_modules
-
-COPY ./ ${APP_HOME}
+COPY . .
 
 RUN addgroup -g 1001 -S nodejs && \
-   adduser -S nextjs -u 1001 -G nodejs
-
-RUN chown -R nextjs:nodejs ${APP_HOME}
+   adduser -S nextjs -u 1001 -G nodejs && \
+   chown -R nextjs:nodejs /app
 
 USER nextjs
 
-CMD [ "npm","run","dev" ]
+CMD [ "npm", "run", "dev" ]
+
 
  

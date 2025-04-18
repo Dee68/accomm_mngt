@@ -89,7 +89,6 @@ services:
       - "3000"
     volumes:
       - ./client:/app
-      - /app/node_modules
     networks:
       - accomm_prod_nw
 
