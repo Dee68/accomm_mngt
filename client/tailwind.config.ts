@@ -1,6 +1,7 @@
 import type { Config } from "tailwindcss";
 //import animate from 'tailwindcss-animate'
 import animate from "./node_modules/tailwindcss-animate";
+import { openSans, robotoSlab } from "./lib/fonts";
 
 
 const config: Config = {
@@ -18,6 +19,10 @@ const config: Config = {
   		},
   		borderRadius: {},
   		colors: {},
+      fontFamily: {
+        openSans: ["var(--font-openSans)"],
+        robotoSlab: ["var(--font-robotoSlab)"]
+      }
 		
   	}
   },
