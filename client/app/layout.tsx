@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import React from "react";
 import { openSans, robotoSlab } from "@/lib/fonts";
-
+import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +16,17 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={` ${openSans.variable} ${robotoSlab.variable}`}>{children}</body>
+      <body className={`${openSans.variable} ${robotoSlab.variable}`}>
+        {/* ThemeProvider inside body, but modifies <html> since attribute="class" */}
+        <ThemeProvider 
+        attribute="class" 
+        defaultTheme="system" 
+        enableSystem={true}
+        disableTransitionOnChange>
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
+
