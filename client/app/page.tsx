@@ -1,14 +1,13 @@
+import type { Metadata } from 'next'
+import Image from "next/image";
+import buildings from "@/./public/assets/images/buildings.webp"
+import Link from "next/link";
+import { ArrowRightIcon } from "@heroicons/react/24/solid";
 
 export const metadata: Metadata = {
   "title": "Home | Accommodation Center",
   "description": "Accommodation Center Home Page. create an account to get started"
 }
-
-import { Metadata } from "next";
-import Image from "next/image";
-import buildings from "@/./public/assets/images/buildings.webp"
-import Link from "next/link";
-import { ArrowRightIcon } from "@heroicons/react/24/solid";
 
 export default function HomePage() {
   return <div className="relative h-screen">
