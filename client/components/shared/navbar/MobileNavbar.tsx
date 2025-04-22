@@ -54,7 +54,7 @@ export default function MobileNavbar() {
             <SheetClose asChild>
                 <SheetFooter>
                     <Link href="/register">
-                    <Button className='lime-gradient small-medium light-border-2 btn-tertiary text-baby_richBlack mt-4 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none'>Register</Button>
+                    <Button className='lime-gradient small-medium light-border-2 btn-tertiary text-babyPowder mt-4 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none'>Register</Button>
                     </Link>
                     <Link href="/login">
                     <Button className='lime-gradient small-medium light-border-2 btn-tertiary text-babyPowder min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none'>Login</Button>
