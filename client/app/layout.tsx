@@ -4,6 +4,7 @@ import React from "react";
 import { openSans, robotoSlab } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/theme-provider";
 import ReduxProvider from "@/lib/redux/provider";
+import Toast from "@/components/shared/Toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -18,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${openSans.variable} ${robotoSlab.variable}`}>
+        <Toast />
         <ReduxProvider>
         {/* ThemeProvider inside body, but modifies <html> since attribute="class" */}
         <ThemeProvider 
