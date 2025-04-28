@@ -1,21 +1,26 @@
 'use client';
 
+import { AuthFormHeader, RegisterForm } from '@/components/shared/forms/auth';
 import React from 'react'
-// import { useTheme } from 'next-themes';
-// import { useEffect } from 'react';
+
 
 
 export default function RegisterPage() {
-  // const { theme, resolvedTheme } = useTheme();
-
-  // useEffect(() => {
-  //   console.log('theme:', theme);
-  //   console.log('resolvedTheme:', resolvedTheme);
-  // }, [theme, resolvedTheme]);
+  
 
   return (
     <div>
-      <h1 className='text-6xl dark:text-pumpkin'>Register Page</h1>
+      <AuthFormHeader 
+        title='Sign up for an account'
+        staticText='Already have an account?'
+        linkText='Login Here'
+        linkHref='/login'/>
+        <div className='mt-7 sm:mx-auto sm:w-full sm:max-w-[480px]'>
+          <div className='bg-lightGrey dark:bg-deepBlueGrey rounded-xl px-6 py-12 shadow sm:rounded-lg sm:px-12 md:rounded-3xl'>
+            <RegisterForm />
+          </div>
+        </div>
+
     </div>
   )
 }
