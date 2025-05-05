@@ -8,12 +8,14 @@ import { Sheet, SheetClose, SheetContent, SheetFooter, SheetTrigger } from '@/co
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
+import { useAuthNavigation } from '@/hooks';
 
 function LeftNavContent(){
-    const pathName = usePathname()
+    const pathName = usePathname();
+    const {filteredNavLinks} = useAuthNavigation()
     return (
         <section className='flex h-full gap-6 flex-col pt-16'>
-            {leftNavLinks.map((linkItem)=>{
+            {filteredNavLinks.map((linkItem)=>{
                 const isActive = (pathName.includes(linkItem.path) && linkItem.path.length > 1) || pathName === linkItem.path;
                 return (
                     <SheetClose asChild key={linkItem.path}>
@@ -31,6 +33,7 @@ function LeftNavContent(){
 }
 
 export default function MobileNavbar() {
+    const {handleLogout,isAuthenticated} = useAuthNavigation()
   return (
     <Sheet>
       <SheetTrigger asChild className='cursor-pointer'>
@@ -53,12 +56,17 @@ export default function MobileNavbar() {
             </SheetClose>
             <SheetClose asChild>
                 <SheetFooter>
-                    <Link href="/register">
+                    {isAuthenticated ? (
+                        <Button onClick={handleLogout} className='lime-gradient small-medium light-border-2 btn-tertiary text-baby_richBlack min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none'>Log Out</Button>
+                    ):(<>
+                        <Link href="/register">
                     <Button className='lime-gradient small-medium light-border-2 btn-tertiary text-babyPowder mt-4 min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none'>Register</Button>
                     </Link>
                     <Link href="/login">
                     <Button className='lime-gradient small-medium light-border-2 btn-tertiary text-babyPowder min-h-[41px] w-full rounded-lg border px-4 py-3 shadow-none'>Login</Button>
                     </Link>
+                    </>)}
+                    
                 </SheetFooter>
             </SheetClose>
         </div>
