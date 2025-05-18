@@ -345,7 +345,7 @@ export interface Profile {
 	last_name: string;
 	username: string;
 	full_name: string;
-	gender: "male" | "female" | "other";
+	gender: "male" | "female";
 	country_of_origin: string;
 	city_of_origin: string;
 	bio?: string;
@@ -416,7 +416,7 @@ export interface ProfileData {
 	first_name: string;
 	last_name: string;
 	username: string;
-	gender: "male" | "female" | "other";
+	gender: "male" | "female";
 	bio?: string;
 	country_of_origin: string;
 	city_of_origin: string;

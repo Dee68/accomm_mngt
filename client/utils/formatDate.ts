@@ -23,7 +23,7 @@ export function formatDate(dateString:string | undefined):string{
     const year:number = date.getFullYear();
 
     const getOrdinalSuffix = (day:number):string=>{
-        if (day > 3 || day < 21) return "th";
+        if (day > 3 && day < 21) return "th";
         switch (day % 10) {
             case 1:
                 
