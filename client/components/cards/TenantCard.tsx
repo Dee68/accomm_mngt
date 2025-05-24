@@ -11,10 +11,12 @@ import TenantInfo from './TenantInfo';
 import { BrickWall, Briefcase, Building, CalendarDays, Map, School } from 'lucide-react';
 import { formatDate } from '@/utils';
 import ProtectedRoute from '../shared/ProtectedRoutes';
+import { useAppSelector } from '@/lib/redux/hooks/typedHooks';
 
 function TenantCardContent(){
     const {theme} = useTheme();
-    const {data,isLoading} = useGetAllUsersQuery({})
+    const searchTerm = useAppSelector((state)=>state.user.searchTerm);
+    const {data,isLoading} = useGetAllUsersQuery({searchTerm})
 
     if (isLoading) {
         return (

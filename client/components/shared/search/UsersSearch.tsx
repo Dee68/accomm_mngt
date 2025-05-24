@@ -3,11 +3,16 @@
 import { Input } from "@/components/ui/input";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks/typedHooks";
 import Image from "next/image";
-//import { setSearchTerm } from "@/lib/redux/features/users/usersApiSlice";
+import { setSearchTerm } from "@/lib/redux/features/users/userSlice";
+import React from "react";
 
 const UsersSearch = ()=>{
     const dispatch = useAppDispatch();
-    //const searchTerm = useAppSelector((state)=>state.user.searchTerm)
+    const searchTerm = useAppSelector((state)=>state.user.searchTerm);
+
+    const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) =>{
+        dispatch(setSearchTerm(event.target.value));
+    };
     return (
         <div className="flex min-h-[56px] bg-gray dark:bg-eerieBlack mb-3 w-full grow rounded-full">
             <Image 
@@ -20,7 +25,8 @@ const UsersSearch = ()=>{
             <Input 
                 placeholder="Search by username, first or last name" 
                 type="search" 
-                value='' 
+                value={searchTerm}
+                onChange={handleInputChange}
                 className="search-text no-focus dark:text-babyPowder border-none bg-transparent shadow-none outline-none"
             />
 
