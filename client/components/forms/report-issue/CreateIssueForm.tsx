@@ -36,7 +36,6 @@ export default function CreateIssueForm() {
     const { data } = useGetMyApartmentQuery() as { data?: ApartmentResponse };
     const apartment = data?.data;
 
-    console.log("Fetched apartment data:", data);
 
     const [reportIssue,{isLoading}] = useReportIssueMutation();
     const router = useRouter();
