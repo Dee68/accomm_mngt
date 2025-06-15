@@ -9,6 +9,8 @@ import About from '@/components/profile/About';
 import Post from '@/components/profile/Post';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import Issue from '@/components/profile/Issue';
+import AssignedIssues from '@/components/profile/AssignedIssues';
 
 export const metadata:Metadata = {
   title:"Accommodation Center | User Profile",
@@ -36,8 +38,10 @@ function ProfilePageContent() {
         {/* post tab content */}
         <Post />
         {/* issue tab content */}
+        <Issue />
         {/* report tab content */}
         {/* assigned tab content */}
+        <AssignedIssues />
       </Tabs>
       </div>
     </div>
