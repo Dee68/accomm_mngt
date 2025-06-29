@@ -93,20 +93,45 @@ class IssueCreateAPIView(generics.CreateAPIView):
         logger.info("send_issue_confirmation_email() function was called.")
 
 
-class IssueDetailAPIView(IssueViewMixin,generics.RetrieveAPIView):
+class IssueDetailAPIView(generics.RetrieveAPIView):
     queryset = Issue.objects.all()
     serializer_class = IssueSerializer
     lookup_field = "id"
     renderer_classes = [GenericJSONRenderer]
     object_label = "issue"
 
-    def get_object(self)->Issue:
+    def get_object(self) -> Issue:
         issue = super().get_object()
+
         user = self.request.user
-        if not (user == issue.reported_by or user.is_staff or user == issue.assigned_to):
+        if not (
+            user == issue.reported_by or user.is_staff or user == issue.assigned_to
+        ):
             raise PermissionDenied("You do not have permission to view this issue")
         self.record_issue_view(issue)
         return issue
+
+    def record_issue_view(self, issue):
+        content_type = ContentType.objects.get_for_model(issue)
+        viewer_ip = self.get_client_ip()
+        user = self.request.user
+
+        obj, created = ContentView.objects.update_or_create(
+            content_type=content_type,
+            object_id=issue.pk,
+            user=user,
+            viewer_ip=viewer_ip,
+            defaults={"last_viewed": timezone.now()},
+        )
+
+    def get_client_ip(self) -> str:
+        x_forwared_for = self.request.META.get("HTTP_X_FORWARED_FOR")
+        if x_forwared_for:
+            ip = x_forwared_for.split(",")[0]
+        else:
+            ip = self.request.META.get("REMOTE_ADDR")
+        return ip
+
     
     
 class IssueUpdateAPIView(IssueViewMixin,generics.UpdateAPIView):

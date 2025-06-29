@@ -40,7 +40,7 @@ export default function IssueCard({issue}:IssueCardProps) {
                 <CardDescription className='dark:text-platinum'>
                     <Hotel className='tab-icon' />
                     <span className="tab-font">Apartment Number: </span>
-                    <span className="text-lg">{}issue.apartment_unit</span>
+                    <span className="text-lg">{issue.apartment_unit}</span>
                 </CardDescription>
             </CardContent>
             <CardFooter  className="dark:text-babyPowder flex flex-row justify-between">

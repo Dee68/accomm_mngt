@@ -8,7 +8,9 @@ import ProtectedRoute from '../shared/ProtectedRoutes';
 
 function AssignedIssuesContent() {
     const { data:assignedIssues, isLoading} = useGetMyAssignedIssuesQuery("")
-    const myAssignedIssues = assignedIssues?.assigned_issues
+    const myAssignedIssues = assignedIssues?.data
+
+    console.log("Assigne Issue Api Response:", assignedIssues);
 
     if (isLoading) {
         return (
