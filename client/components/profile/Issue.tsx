@@ -9,7 +9,7 @@ import ProtectedRoute from "../shared/ProtectedRoutes";
 function IssueContent() {
     const { data,isLoading,error } = useGetMyIssuesQuery();
     const myIssue = data?.data;
-    console.log("Issues API response:", data);
+    //console.log("Issues API response:", data);
 
 
     if (isLoading) {
