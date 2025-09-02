@@ -1,5 +1,6 @@
 import React from 'react'
 import type { Metadata } from 'next'
+import PostCard from '@/components/cards/PostCard'
 
 export const metadata:Metadata = {
     title: "Accommodation Center | Welcome",
@@ -8,8 +9,8 @@ export const metadata:Metadata = {
 
 export default function WelcomePage() {
   return (
-    <div>
-      <h1 className='dark:text-pumpkin text-6xl'>Welcome</h1>
-    </div>
+    <>
+      <PostCard />
+    </>
   )
 }
