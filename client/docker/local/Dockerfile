@@ -1,8 +1,12 @@
-FROM docker.io/node:20.11-alpine3.18 AS base
+FROM docker.io/node:20.11-alpine3.19 AS base
 
 FROM base AS node-build-stage
 
-RUN apk add --no-cache libc6-compat
+#RUN apk update && apk add --no-cache libc6-compat
+RUN echo "http://dl-cdn.alpinelinux.org/alpine/v3.19/community" >> /etc/apk/repositories \
+    && apk update \
+    && apk add --no-cache libc6-compat
+
 
 WORKDIR /app
 
