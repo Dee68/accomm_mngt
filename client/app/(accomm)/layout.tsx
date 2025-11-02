@@ -1,5 +1,6 @@
 import LeftNavbar from '@/components/shared/navbar/LeftNavbar'
 import Navbar from '@/components/shared/navbar/Navbar'
+import RightNavbar from '@/components/shared/navbar/RightNavbar'
 import React from 'react'
 
 interface LayoutsProps {
@@ -17,7 +18,7 @@ export default function layouts({children}:LayoutsProps) {
         <div>{children}</div>
       </section>
       {/* placeholder RightNavbar component */}
-        <div className='dark:text-pumpkin hidden text-xl md:block'>Right Navbar</div>
+        <RightNavbar />
       </div>
     </main>
   )
