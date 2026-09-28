@@ -2,7 +2,7 @@ import PostTagCard from "@/components/cards/PostTagCard";
 import { Metadata } from "next"
 
 export const metadata: Metadata = {
-    title:"Accommodation Center | Post tags",
+    title:"Accommodation Centre | Post tags",
     description: "Authenticated users can see the tag details of a post"
 }
 

@@ -42,7 +42,7 @@ services:
     image: accomm_prod_postgres
     container_name: accomm_prod_postgres
     ports:
-      - "5432:5432"
+      - "5434:5432"
     volumes:
       - accomm_prod_postgres_data:/var/lib/postgresql/data
     env_file:
