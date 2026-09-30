@@ -9,7 +9,7 @@ User = get_user_model()
 class CreateUserSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ["id","username","first_name","last_name","password"]
+        fields = ["id","email","username","first_name","last_name","password"]
 
 class CustomUserSerializer(UserSerializer):
     full_name = serializers.ReadOnlyField(source="get_full_name")

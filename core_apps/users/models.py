@@ -6,7 +6,7 @@ from core_apps.users.managers import UserManager
 from django.utils.translation import gettext_lazy as _
 
 class UsernameValidator(validators.RegexValidator):
-    regex = r"^[\w.@+-]+\z"
+    regex = r"^[\w.@+-]+\Z"
     message = _(
         "Your username is not valid. A username can only contain letters, numbers, a dot, @ symbol, "
         "+ symbol and an hyphen")
@@ -20,7 +20,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=30,verbose_name=_("Last Name"))
     email = models.EmailField(verbose_name=_("Email Address"), unique=True, db_index=True)
     username = models.CharField(verbose_name=_("Username"), max_length=30, unique=True, 
-                                validators=[UsernameValidator])
+                                validators=[UsernameValidator()])
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [
