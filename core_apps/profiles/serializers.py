@@ -95,6 +95,7 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         return instance
         
 class AvatarUploadSerializer(serializers.ModelSerializer):
+    avatar = serializers.ImageField()
     class Meta:
         model = Profile
         fields = ["avatar"]

@@ -1,6 +1,10 @@
 import pytest
 from unittest.mock import patch
 
+from io import BytesIO
+
+from PIL import Image
+
 from django.contrib.auth import get_user_model
 
 from core_apps.profiles.models import Profile
@@ -112,9 +116,18 @@ def test_profile_serializer_returns_avatar_url():
 
     profile = user.profile
 
+    image_file = BytesIO()
+
+    Image.new("RGB", (1, 1), color="white").save(
+        image_file,
+        format="JPEG",
+    )
+
+    image_file.seek(0)
+
     image = SimpleUploadedFile(
-        "test-avatar.jpg",
-        b"fake-image-content",
+        "avatar.jpg",
+        image_file.getvalue(),
         content_type="image/jpeg",
     )
 
@@ -258,12 +271,38 @@ def test_avatar_upload_serializer_accepts_valid_image():
     )
     profile = user.profile
 
-    image = SimpleUploadedFile(
-        "avatar.jpg",
-        b"fake-image-content",
-        content_type="image/jpeg",
+    image_file = BytesIO()
+
+    Image.new("RGB", (1, 1), color="white").save(
+        image_file,
+        format="JPEG",
     )
 
+    image_file.seek(0)
+
+    image_file = BytesIO()
+
+    Image.new("RGB", (1, 1), color="white").save(
+        image_file,
+        format="JPEG",
+    )
+
+    image_file.seek(0)
+
+    image_file = BytesIO()
+
+    Image.new("RGB", (1, 1), color="white").save(
+        image_file,
+        format="JPEG",
+    )
+
+    image_file.seek(0)
+
+    image = SimpleUploadedFile(
+        "avatar.jpg",
+        image_file.getvalue(),
+        content_type="image/jpeg",
+    )
     serializer = AvatarUploadSerializer(
         profile,
         data={"avatar": image},
@@ -280,9 +319,18 @@ def test_avatar_upload_serializer_saves_avatar():
     )
     profile = user.profile
 
+    image_file = BytesIO()
+
+    Image.new("RGB", (1, 1), color="white").save(
+        image_file,
+        format="JPEG",
+    )
+
+    image_file.seek(0)
+
     image = SimpleUploadedFile(
         "avatar.jpg",
-        b"fake-image-content",
+        image_file.getvalue(),
         content_type="image/jpeg",
     )
 

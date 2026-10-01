@@ -41,7 +41,7 @@ class ProfileDetailAPIView(generics.RetrieveAPIView):
     object_label = "profile"
 
     def get_queryset(self)->QuerySet:
-        return Profile.objects.select_related("users").all()
+        return Profile.objects.select_related("user").all()
     
     def get_object(self)->Profile:
         try:
@@ -77,8 +77,17 @@ class AvatarUploadView(APIView):
 
         if serializer.is_valid():
             image = serializer.validated_data["avatar"]
+            if image is None:
+                return Response(
+                    {"avatar": ["This field may not be blank."]},
+                        status=status.HTTP_400_BAD_REQUEST,
+                )
+
+    
             image_content = image.read()
+
             upload_avatar_to_cloudinary.delay(str(profile.id),image_content)
+            
             return Response({
                 "message": "Avatar upload started"
             }, status=status.HTTP_202_ACCEPTED)
@@ -90,7 +99,7 @@ class NonTenantProfileListView(generics.ListAPIView):
     renderer_classes = [GenericJSONRenderer]
     pagination_class = StandardResultSetPagination
     object_label = "non_tenant_profiles"
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend,SearchFilter]
     search_fields = ["user__username","user__first_name","user__last_name"]
     filterset_fields = ["occupation","gender","country_field"]
 
