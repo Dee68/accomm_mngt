@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import forms as admin_forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserChangeForm as BaseUserChangeForm
+from django.contrib.auth.forms import UserCreationForm
 
 
 User = get_user_model()
@@ -12,10 +13,10 @@ class UserChangeForm(BaseUserChangeForm):
         fields = ["first_name","last_name","username","email"]
 
 
-class UserCreationForm(admin_forms.UserChangeForm):
+class UserCreationForm(admin_forms.UserCreationForm):
     password1 = forms.CharField(label="Password", widget=forms.PasswordInput)
     password2 = forms.CharField(label="Confirm Password", widget=forms.PasswordInput)
-    class Meta(admin_forms.UserChangeForm.Meta):
+    class Meta(admin_forms.UserCreationForm.Meta):
         model = User
         fields = ["first_name","last_name","username","email"]
     

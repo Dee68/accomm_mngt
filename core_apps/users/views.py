@@ -65,6 +65,11 @@ class CustomTokenRefreshView(TokenRefreshView):
             refresh_res = super().post(new_request, *args, **kwargs)
         except Exception as e:
             logger.error(f"Error refreshing token: {e}", exc_info=True)
+            if hasattr(e, "status_code"):
+                return Response(
+                    {"error": "Token refresh failed", "details": str(e)},
+                    status=e.status_code,
+                )
             return Response({"error": "Token refresh failed", "details": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
         logger.info(f"Refresh response status: {refresh_res.status_code}")

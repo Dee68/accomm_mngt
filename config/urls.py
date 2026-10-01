@@ -26,8 +26,8 @@ Schema_view = get_schema_view(
     openapi.Info(
         title="Accommodation Management API",
         default_version="v1",
-        description="An Accommodation management API for accommodation centre",
-        contact=openapi.Contact(email="admin@golden-ventures.com"),
+        description="An Accommodation management API for accommodation center",
+        contact=openapi.Contact(email="api.goldenventures@gmail.com"),
         license=openapi.License(name="MIT License")
     ),
     public=True,
@@ -51,6 +51,6 @@ urlpatterns = [
     path("api/v1/posts/", include("core_apps.posts.urls")),
 ]
 
-admin.site.site_header = "Accommodation Centre Admin"
+admin.site.site_header = "Accommodation Center Admin"
 admin.site.site_title = "Accommodation Admin Portal"
 admin.site.index_title = "Welcome to Accommodation Admin Portal"
