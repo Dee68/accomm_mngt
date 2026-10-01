@@ -5,6 +5,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
+from django.utils import timezone
 from django.db import IntegrityError
 
 User = get_user_model()
@@ -47,8 +48,13 @@ class ContentView(TimeStampedModel):
     def record_view(cls,content_object,user:User,viewer_ip:str)->None:
         content_type = ContentType.objects.get_for_model(content_object)
         try:
-            view,created = cls.objects.get_or_create(content_type=content_type,object_id=content_object.pkid, defaults={
-                "user":user,"viewer_ip":viewer_ip
+            view,created = cls.objects.get_or_create(
+                content_type=content_type,
+                object_id=content_object.pkid, 
+                user=user,
+                viewer_ip=viewer_ip,
+                defaults={
+                "last_viewed": timezone.now(),
             })
         except IntegrityError:
             pass
