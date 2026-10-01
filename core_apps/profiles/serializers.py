@@ -56,7 +56,7 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
     last_name = serializers.CharField(source="user.last_name")
     full_name = serializers.SerializerMethodField()
     username = serializers.CharField(source="user.username")
-    country_of_origin = CountryField()
+    #country_of_origin = CountryField()
 
     class Meta:
         model = Profile
@@ -78,6 +78,21 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         if obj.user:
             return obj.user.get_full_name
         return None
+    
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop("user", {})
+
+        for attr, value in user_data.items():
+            setattr(instance.user, attr, value)
+
+        instance.user.save()
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+
+        return instance
         
 class AvatarUploadSerializer(serializers.ModelSerializer):
     class Meta:
