@@ -13,7 +13,7 @@ class IssueViewMixin:
 
         obj, created = ContentView.objects.update_or_create(
             content_type=content_type,
-            object_id=issue.id,
+            object_id=issue.pkid,
             user=user,
             viewer_ip=viewer_ip,
             defaults={"last_viewed": timezone.now()},
