@@ -2,6 +2,7 @@ from django_countries.fields import CountryField
 from rest_framework import serializers
 
 from .models import Profile
+from core_apps.apartments.models import Apartment
 from core_apps.apartments.serializers import ApartmentSerializer
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -45,12 +46,13 @@ class ProfileSerializer(serializers.ModelSerializer):
     def get_average_rating(self,obj:Profile):
         return obj.get_average_rating()
 
-    def get_apartment(self,obj:Profile)->None:
-        apartment = obj.user.apartment.first()
-        if apartment:
-            return ApartmentSerializer(apartment).data
-        else:
+    def get_apartment(self, obj: Profile):
+        try:
+            apartment = obj.user.apartment
+        except Apartment.DoesNotExist:
             return None
+
+        return ApartmentSerializer(apartment).data
         
     def get_reviews(self, obj):
         ratings = obj.user.received_ratings.select_related("rating_user").order_by("-created_at")

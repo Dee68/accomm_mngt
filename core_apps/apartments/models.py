@@ -9,7 +9,7 @@ class Apartment(TimeStampedModel):
     unit_number = models.CharField(max_length=10,verbose_name=_("Unit Number"),unique=True)
     building = models.CharField(max_length=50,verbose_name=_("Building"))
     floor = models.PositiveIntegerField(verbose_name=_("Floor"))
-    tenant = models.ForeignKey(User,
+    tenant = models.OneToOneField(User,
                                 on_delete=models.SET_NULL,
                                 null=True,
                                 related_name="apartment",
