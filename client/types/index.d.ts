@@ -379,17 +379,22 @@ export interface ProfilesResponse {
 		results: Profile[];
 	};
 }
-export interface RatingResponse {
-	rating: {
-		id: string;
-		rating: number;
-		comment: string;
-	};
+export interface Rating {
+  id: string;
+  rating: number;
+  comment: string;
 }
+
+export interface RatingResponse {
+  status_code: number;
+  object_label: string;
+  data: Rating;
+}
+
 export interface RatingData {
-	rated_user_username: string;
-	rating: number;
-	comment: string;
+  rated_user_username: string;
+  rating: number;
+  comment: string;
 }
 export interface NonTenantResponse {
 	non_tenant_profiles: {

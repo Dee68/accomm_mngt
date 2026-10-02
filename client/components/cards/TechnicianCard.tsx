@@ -70,10 +70,11 @@ export default function TechnicianCard() {
                                     
                                 </CardDescription>
                                 <div className="flex-center">
-                                <Link href={`/add-rating?username=${technician.username}`}>
-                                 <Button size="sm" className="electricIndigo-gradient text-babyPowder mt-3">
-                                 Give me a rating
-                                 </Button>
+                                <Link
+                                href={`/add-rating?username=${technician.username}`}
+                                className="electricIndigo-gradient text-babyPowder mt-3 inline-flex items-center justify-center rounded-md px-3 py-2 text-sm font-medium"
+                                >
+                                Rate this technician
                                 </Link>
                                 </div>
                             </CardContent>

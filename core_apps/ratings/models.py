@@ -34,3 +34,9 @@ class Rating(TimeStampedModel):
     class Meta:
         verbose_name = _("Rating")
         verbose_name_plural = _("Ratings")
+        constraints = [
+            models.UniqueConstraint(
+                fields=["rated_user", "rating_user"],
+                name="unique_rating_per_user_pair",
+            )
+        ]

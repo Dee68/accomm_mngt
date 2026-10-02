@@ -23,14 +23,15 @@ class TimeStampedModel(models.Model):
 
 class ContentView(TimeStampedModel):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name=_("Content Type"))
-    object_id = models.PositiveIntegerField(verbose_name=_("Object ID"))
+    #object_id = models.PositiveIntegerField(verbose_name=_("Object ID"))
+    object_id = models.UUIDField()
     content_object = GenericForeignKey("content_type", "object_id")
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
-        related_name="content_views",
+        related_name="content_views", 
         verbose_name=_("User")
     )
     viewer_ip = models.GenericIPAddressField(verbose_name=_("Viewer IP Address"), null=True,blank=True)
@@ -42,7 +43,7 @@ class ContentView(TimeStampedModel):
         unique_together = ["content_type","object_id","user","viewer_ip"]
 
     def __str__(self):
-        return f"{self.content_object} viewed by {self.user.get_full_name if self.user else 'Anonymous'} from IP:{self.viewer_ip}"
+        return f"{self.content_object} viewed by {self.user.get_full_name() if self.user else 'Anonymous'} from IP:{self.viewer_ip}"
     
     @classmethod
     def record_view(cls,content_object,user:User,viewer_ip:str)->None:
@@ -51,7 +52,7 @@ class ContentView(TimeStampedModel):
             view,created = cls.objects.get_or_create(
                 content_type=content_type,
                 object_id=content_object.pkid, 
-                user=user,
+                user=user, 
                 viewer_ip=viewer_ip,
                 defaults={
                 "last_viewed": timezone.now(),

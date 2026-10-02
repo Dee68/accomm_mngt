@@ -3,12 +3,16 @@ from typing import Optional, Any, Union
 from django.utils.translation import gettext_lazy as _
 from rest_framework.renderers import JSONRenderer
 
+
 class GenericJSONRenderer(JSONRenderer):
     charset = "utf-8"
     object_label = "object"
 
     def render(
-        self, data: Any, accepted_media_type: Optional[str] = None, renderer_context: Optional[dict] = None
+        self,
+        data: Any,
+        accepted_media_type: Optional[str] = None,
+        renderer_context: Optional[dict] = None,
     ) -> Union[bytes, str]:
         if renderer_context is None:
             renderer_context = {}
@@ -22,17 +26,17 @@ class GenericJSONRenderer(JSONRenderer):
 
         status_code = response.status_code
 
-        # Check if there's an error and return original response
+        # Errors: return original response unchanged
         errors = data.get("errors", None)
         if errors is not None:
-            return super().render(data)
+            return super().render(data, accepted_media_type, renderer_context)
 
-        # Modify response format to include status_code, object_label, and actual data
+        # Wrap the response
         response_data = {
             "status_code": status_code,
             "object_label": object_label,
-            "data": data  # 🔥 Ensure actual data is included!
+            "data": data,
         }
 
-        return json.dumps(response_data).encode(self.charset)
+        return super().render(response_data, accepted_media_type, renderer_context)
 
