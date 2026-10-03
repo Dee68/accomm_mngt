@@ -1,5 +1,5 @@
 import pytest
-from django.urls import resolve,reverse
+from django.urls import resolve
 
 from core_apps.profiles.views import (
     ProfileListAPIView,
