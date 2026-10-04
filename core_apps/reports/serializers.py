@@ -3,7 +3,6 @@ import logging
 from django.contrib.auth import get_user_model
 from django.utils import timezone
 from rest_framework import serializers
-from core_apps.common.models import ContentView
 from .emails import send_deactivation_email, send_warning_email
 from .models import Report
 

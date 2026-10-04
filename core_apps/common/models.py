@@ -1,7 +1,7 @@
 import uuid
 from uuid import UUID
 from django.db import models
-from django.contrib.contenttypes.fields import GenericForeignKey
+#from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
@@ -23,9 +23,20 @@ class TimeStampedModel(models.Model):
 
 class ContentView(TimeStampedModel):
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE, verbose_name=_("Content Type"))
-    #object_id = models.PositiveIntegerField(verbose_name=_("Object ID"))
+
     object_id = models.UUIDField()
-    content_object = GenericForeignKey("content_type", "object_id")
+
+    @property
+    def content_object(self):
+        model = self.content_type.model_class()
+        if model is None:
+            return None
+
+        try:
+            return model.objects.get(id=self.object_id)
+        except model.DoesNotExist:
+            return None
+        
     user = models.ForeignKey(
         User,
         on_delete=models.SET_NULL,
@@ -51,7 +62,7 @@ class ContentView(TimeStampedModel):
         try:
             view,created = cls.objects.get_or_create(
                 content_type=content_type,
-                object_id=content_object.pkid, 
+                object_id=content_object.id,
                 user=user, 
                 viewer_ip=viewer_ip,
                 defaults={

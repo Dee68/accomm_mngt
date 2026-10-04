@@ -161,7 +161,7 @@ class BasePostSerializer(serializers.ModelSerializer):
         
     def get_view_count(self,obj)->int:
         content_type = ContentType.objects.get_for_model(obj)
-        return ContentView.objects.filter(content_type=content_type,object_id=obj.pkid).count()
+        return ContentView.objects.filter(content_type=content_type,object_id=obj.id).count()
         
     def get_is_upvoted(self,obj):
         user = self.context["request"].user

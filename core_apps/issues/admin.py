@@ -3,7 +3,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
-from core_apps.common.admin import ContentViewInline
 from core_apps.common.models import ContentView
 from .models import Issue
 
@@ -44,7 +43,6 @@ class IssueAdmin(admin.ModelAdmin):
     search_fields = ["apartment__unit_number", "reported_by__first_name"]
     ordering = ["-created_at"]
     autocomplete_fields = ["apartment", "reported_by"]
-    inlines = [ContentViewInline]
 
     actions = ["mark_in_progress", "mark_resolved"]
 
@@ -71,7 +69,7 @@ class IssueAdmin(admin.ModelAdmin):
         content_type = ContentType.objects.get_for_model(obj)
         return ContentView.objects.filter(
             content_type=content_type,
-            object_id=obj.pkid,
+            object_id=obj.id,
         ).count()
 
     get_total_views.short_description = "Total Views"

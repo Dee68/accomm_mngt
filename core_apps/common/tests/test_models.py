@@ -20,7 +20,7 @@ def test_content_view_has_uuid_and_timestamps():
 
     view = ContentView.objects.create(
         content_type=content_type,
-        object_id=profile.pkid,
+        object_id=profile.id,
         user=user,
         viewer_ip="192.168.1.10",
         last_viewed="2026-10-01T12:00:00Z",
@@ -44,7 +44,7 @@ def test_content_view_returns_content_object():
 
     view = ContentView.objects.create(
         content_type=content_type,
-        object_id=profile.pkid,
+        object_id=profile.id,
         user=user,
         viewer_ip="192.168.1.20",
         last_viewed="2026-10-01T12:00:00Z",
@@ -67,7 +67,7 @@ def test_content_view_string_representation_with_user():
 
     view = ContentView.objects.create(
         content_type=content_type,
-        object_id=profile.pkid,
+        object_id=profile.id,
         user=user,
         viewer_ip="192.168.1.30",
         last_viewed="2026-10-01T12:00:00Z",
@@ -90,7 +90,7 @@ def test_content_view_string_representation_for_anonymous_user():
 
     view = ContentView.objects.create(
         content_type=content_type,
-        object_id=profile.pkid,
+        object_id=profile.id,
         user=None,
         viewer_ip="192.168.1.40",
         last_viewed="2026-10-01T12:00:00Z",
@@ -120,7 +120,7 @@ def test_content_view_record_view_creates_view():
 
     view = ContentView.objects.filter(
         content_type=content_type,
-        object_id=profile.pkid,
+        object_id=profile.id,
     ).first()
 
     assert view is not None
@@ -154,7 +154,7 @@ def test_content_view_record_view_does_not_create_duplicate():
 
     assert ContentView.objects.filter(
         content_type=content_type,
-        object_id=profile.pkid,
+        object_id=profile.id,
         user=user,
         viewer_ip="192.168.1.60",
     ).count() == 1
@@ -191,7 +191,7 @@ def test_content_view_record_view_allows_different_users():
 
     views = ContentView.objects.filter(
         content_type=content_type,
-        object_id=profile.pkid,
+        object_id=profile.id,
     )
 
     assert views.count() == 2
@@ -224,7 +224,7 @@ def test_content_view_record_view_allows_different_ips():
 
     views = ContentView.objects.filter(
         content_type=content_type,
-        object_id=profile.pkid,
+        object_id=profile.id,
         user=user,
     )
 
@@ -252,7 +252,7 @@ def test_content_view_record_view_allows_anonymous_user():
 
     view = ContentView.objects.get(
         content_type=content_type,
-        object_id=profile.pkid,
+        object_id=profile.id,
         user=None,
         viewer_ip="192.168.1.90",
     )
@@ -274,7 +274,7 @@ def test_content_view_user_is_set_to_null_when_user_is_deleted():
 
     view = ContentView.objects.create(
         content_type=content_type,
-        object_id=profile.pkid,
+        object_id=profile.id,
         user=user,
         viewer_ip="192.168.1.100",
         last_viewed="2026-10-01T12:00:00Z",

@@ -32,7 +32,7 @@ class IssueSerializer(serializers.ModelSerializer):
         content_type = ContentType.objects.get_for_model(obj)
         return ContentView.objects.filter(
             content_type=content_type,
-            object_id = obj.pkid
+            object_id = obj.id
         ).count()
     
 
@@ -65,7 +65,7 @@ class IssueStatusUpdateSerializer(serializers.ModelSerializer):
                 viewer_ip = request.META.get("REMOTE_ADDR", "0.0.0.0")
                 ContentView.objects.update_or_create(
                     content_type=content_type,
-                    object_id=instance.pkid,
+                    object_id=instance.id,
                     user=request.user,
                     viewer_ip=viewer_ip,
                     defaults={"last_viewed": timezone.now()},

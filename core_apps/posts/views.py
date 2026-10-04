@@ -8,6 +8,9 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from django.contrib.contenttypes.models import ContentType
+from django.db.models import Count, OuterRef, Subquery, Value
+from django.db.models.functions import Coalesce
 from core_apps.common.models import ContentView
 from core_apps.common.renderers import GenericJSONRenderer
 from .filters import PostFilter
@@ -66,7 +69,7 @@ class PostDetailAPIView(generics.RetrieveAPIView):
     
     def record_post_view(self,post):
         content_type = ContentType.objects.get_for_model(post)
-        object_id = post.pk
+        object_id = post.id
         viewer_ip = self.get_client_ip()
         user = self.request.user
 
@@ -219,11 +222,30 @@ class TopPostListAPIView(generics.ListAPIView):
     object_label = "top_posts"
 
     def get_queryset(self):
-        queryset = Post.objects.annotate(
-            replies_count = Count("replies"),
-            view_count = Count("content_views")
-        ).order_by("-upvotes","-view_count","-replies_count")[:6]
-        return queryset
+        post_content_type = ContentType.objects.get_for_model(Post)
+
+        view_count_subquery = (
+            ContentView.objects
+            .filter(
+                content_type=post_content_type,
+                object_id=OuterRef("id"),
+            )
+            .values("object_id")
+            .annotate(count=Count("pk"))
+            .values("count")
+        )
+
+        return (
+            Post.objects
+            .annotate(
+                replies_count=Count("replies"),
+                view_count=Coalesce(
+                    Subquery(view_count_subquery),
+                    Value(0),
+                ),
+            )
+            .order_by("-upvotes", "-view_count", "-replies_count")[:6]
+        )
     
 class PostsByTagListAPIView(generics.ListAPIView):
     serializer_class = PostByTagSerializer
