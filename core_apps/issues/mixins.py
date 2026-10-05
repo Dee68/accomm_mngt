@@ -19,9 +19,9 @@ class IssueViewMixin:
                 viewer_ip=viewer_ip,
                 defaults={"last_viewed": timezone.now()},
             )
-        except Exception:
+        except Exception as e:
 
-            logger.info(f"View recorded for Issue ID: {issue.id}, Created: {created}")
+            logger.info(f"Failed to record view for Issue ID: {issue.id}: {e}")
 
     def get_client_ip(self) -> str:
         x_forwarded_for = self.request.META.get("HTTP_X_FORWARDED_FOR")
