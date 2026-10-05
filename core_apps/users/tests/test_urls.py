@@ -7,7 +7,7 @@ from core_apps.users.views import (
     CustomTokenRefreshView,
     LogoutAPIView,
 )
-
+ 
 
 @pytest.mark.parametrize(
     "url, expected_view",
