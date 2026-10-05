@@ -102,3 +102,59 @@ def test_post_detail_records_content_view():
     )
 
     assert content_view.object_id == post.id
+
+@pytest.mark.django_db
+def test_my_posts_can_order_by_most_replied_to():
+    user = User.objects.create_user(
+        username="my_posts_user",
+        email="my_posts_user@example.com",
+        password="TestPassword123!",
+    )
+
+    post_one_reply = Post.objects.create(
+        title="One Reply",
+        body="Post with one reply.",
+        author=user,
+    )
+
+    post_two_replies = Post.objects.create(
+        title="Two Replies",
+        body="Post with two replies.",
+        author=user,
+    )
+
+    from core_apps.posts.models import Reply
+
+    Reply.objects.create(
+        post=post_one_reply,
+        author=user,
+        body="Reply one",
+    )
+
+    Reply.objects.create(
+        post=post_two_replies,
+        author=user,
+        body="Reply one",
+    )
+
+    Reply.objects.create(
+        post=post_two_replies,
+        author=user,
+        body="Reply two",
+    )
+
+    client = APIClient()
+    client.force_authenticate(user=user)
+
+    response = client.get(
+        "/api/v1/posts/my-posts/?ordering=most_replied_to"
+    )
+
+    assert response.status_code == 200
+
+    results = response.data["results"]
+
+    assert [item["id"] for item in results] == [
+        str(post_two_replies.id),
+        str(post_one_reply.id),
+    ]

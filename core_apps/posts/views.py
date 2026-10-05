@@ -1,5 +1,3 @@
-from django.contrib.contenttypes.models import ContentType
-from django.db.models import Count
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
 from rest_framework import generics, status, permissions
@@ -49,7 +47,12 @@ class MyPostListAPIView(generics.ListAPIView):
     object_label = "my_posts"
 
     def get_queryset(self):
-        return Post.objects.filter(author=self.request.user).order_by("-upvotes","-created_at")
+        return (
+            Post.objects
+            .filter(author=self.request.user)
+            .annotate(replies_count=Count("replies"))
+            .order_by("-upvotes", "-created_at")
+        )
     
 class PostDetailAPIView(generics.RetrieveAPIView):
     serializer_class = PostSerializer

@@ -2,7 +2,6 @@ from django.db import models
 from autoslug import AutoSlugField
 from django.contrib.auth import get_user_model
 from django.conf import settings
-#from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Count
 from taggit.managers import TaggableManager
@@ -24,7 +23,7 @@ class Post(TimeStampedModel):
     upvoted_by = models.ManyToManyField(User,related_name="upvoted_posts",blank=True)
     downvotes = models.PositiveIntegerField(default=0,verbose_name=_("Downvotes"))
     downvoted_by = models.ManyToManyField(User,related_name="downvoted_posts",blank=True)
-    #content_views = GenericRelation(ContentView,related_query_name="posts")
+    
     @property
     def content_views(self):
         content_type = ContentType.objects.get_for_model(self)
