@@ -25,7 +25,9 @@ class ReportListAPIView(generics.ListAPIView):
     renderer_classes = [GenericJSONRenderer]
     object_label = "Reports"
 
-    def get_queryset(self)->Report:
+    def get_queryset(self) -> Report:
         user = self.request.user
-        return Report.objects.filter(reported_by=user)
+        return Report.objects.filter(
+            reported_by=user
+        ).order_by("-created_at")
 

@@ -1,9 +1,6 @@
-
-
 from os import getenv, path
 from pathlib import Path
 from dotenv import load_dotenv
-import cloudinary
 from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -144,8 +141,11 @@ TIME_ZONE = 'Europe/Dublin'
 USE_I18N = True
 
 USE_TZ = True
+SWAGGER_USE_COMPAT_RENDERERS = False
 
 SITE_ID = 1
+
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -188,15 +188,17 @@ CELERY_BEAT_SCHEDULE = {
     }
 }
 
-CLOUDINARY_CLOUD_NAME= getenv("CLOUDINARY_CLOUD_NAME")
-CLOUDINARY_API_KEY= getenv("CLOUDINARY_API_KEY")
-CLOUDINARY_API_SECRET= getenv("CLOUDINARY_API_SECRET")
+# import cloudinary
 
-cloudinary.config(
-    cloud_name = CLOUDINARY_CLOUD_NAME,
-    api_key = CLOUDINARY_API_KEY,
-    api_secret = CLOUDINARY_API_SECRET
-)
+# CLOUDINARY_CLOUD_NAME= getenv("CLOUDINARY_CLOUD_NAME")
+# CLOUDINARY_API_KEY= getenv("CLOUDINARY_API_KEY")
+# CLOUDINARY_API_SECRET= getenv("CLOUDINARY_API_SECRET")
+
+# cloudinary.config(
+#     cloud_name = CLOUDINARY_CLOUD_NAME,
+#     api_key = CLOUDINARY_API_KEY,
+#     api_secret = CLOUDINARY_API_SECRET
+# )
 
 COOKIE_NAME = "access"
 COOKIE_SAMESITE = "Lax"
