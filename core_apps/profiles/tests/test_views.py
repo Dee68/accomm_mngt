@@ -337,11 +337,6 @@ def test_avatar_upload_starts_successfully():
 
     client.force_authenticate(user=user)
 
-    # image = SimpleUploadedFile(
-    #     "avatar.jpg",
-    #     b"fake-image-content",
-    #     content_type="image/jpeg",
-    # )
     image_file = BytesIO()
     Image.new("RGB", (1, 1), color="white").save(
         image_file,

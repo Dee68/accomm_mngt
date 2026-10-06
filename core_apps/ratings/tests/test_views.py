@@ -142,7 +142,7 @@ def test_duplicate_rating_is_rejected():
     second = client.post("/api/v1/ratings/create/", payload, format="json")
 
     assert first.status_code == 201
-    assert second.status_code == 400  # or 403, depending on your error handling
+    assert second.status_code == 400  # or 403
     assert Rating.objects.filter(rated_user=plumber, rating_user=tenant).count() == 1
 
 

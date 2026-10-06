@@ -89,7 +89,6 @@ def test_create_user_without_password():
     assert user.has_usable_password() is False
 
 
-# public method: create_user
 @pytest.mark.django_db
 def test_manager_create_user():
     user = User.objects.create_user(

@@ -26,9 +26,8 @@ class GenericJSONRenderer(JSONRenderer):
 
         status_code = response.status_code
 
-        # Errors: return original response unchanged
-        errors = data.get("errors", None)
-        if errors is not None:
+        #Errors = (4xx ,5xx):
+        if status_code >= 400:
             return super().render(data, accepted_media_type, renderer_context)
 
         # Wrap the response
