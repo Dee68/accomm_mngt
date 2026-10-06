@@ -6,17 +6,29 @@ import { extractErrorMessage } from "@/utils";
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 
+const TECHNICIAN_OCCUPATIONS = [
+  "mason",
+  "plumber",
+  "painter",
+  "roofer",
+  "electrician",
+  "carpenter",
+  "hvac",
+];
+
+
+
 export function useAuthNavigation() {
   const dispatch = useAppDispatch();
   const [logoutUser] = useLogoutUserMutation();
   const { isAuthenticated } = useAppSelector((state) => state.auth);
-  const { data: userResponse } = useGetUserQuery(undefined, {
+  const { data: user } = useGetUserQuery(undefined, {
     skip: !isAuthenticated,
   });
   const router = useRouter();
 
-  //const user = userData?.data;
-  const occupation = userResponse?.occupation
+  const occupation = user?.occupation;
+
 
   const handleLogout = async () => {
     try {
@@ -31,7 +43,6 @@ export function useAuthNavigation() {
   };
 
   const filteredNavLinks = leftNavLinks.filter((link) => {
-    // Authenticated-only links
     if (
       link.path === "/profile" ||
       link.path === "/tenants" ||
@@ -44,13 +55,24 @@ export function useAuthNavigation() {
       return isAuthenticated;
     }
 
-    // Assigned issues — authenticated non-tenants only
     if (link.path === "/assigned-issues") {
-      return isAuthenticated && occupation !== "tenant";
+      return (
+        isAuthenticated &&
+        typeof occupation === "string" &&
+        TECHNICIAN_OCCUPATIONS.includes(occupation)
+      );
     }
+    
 
     return true;
   });
 
-  return { handleLogout, filteredNavLinks, isAuthenticated };
+const isTechnician =
+  isAuthenticated &&
+  typeof occupation === "string" &&
+  TECHNICIAN_OCCUPATIONS.includes(occupation);
+
+return { handleLogout, filteredNavLinks, isAuthenticated, isTechnician, occupation };
+
+  //return { handleLogout, filteredNavLinks, isAuthenticated };
 }

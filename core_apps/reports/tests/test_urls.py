@@ -6,4 +6,4 @@ def test_create_report_url():
 
 
 def test_my_reports_url():
-    assert reverse("my-reports") == "/api/v1/reports/me/"
+    assert reverse("my-reports") == "/api/v1/reports/me/" 

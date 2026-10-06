@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from '@/components/ui/button';
-import { leftNavLinks } from '@/constants';
 import { useAuthNavigation } from '@/hooks';
 import Image from 'next/image';
 import Link from 'next/link';

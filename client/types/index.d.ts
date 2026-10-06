@@ -274,29 +274,56 @@ export interface UserCommonData {
 	password: string;
 }
 
+// export interface User {
+// 	first_name: string;
+// 	last_name: string;
+// 	email: string;
+// }
 export interface User {
-	first_name: string;
-	last_name: string;
-	email: string;
+  id: string;
+  email: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+  slug: string;
+  full_name: string;
+  gender: string;
+  occupation: string;
+  phone_number: string;
+  country: string;
+  city: string;
+  reputation: string;
+  avatar: string;
+  date_joined: string;
 }
 
 export interface UserResponse {
-	id: string;
-	email: string;
-	first_name: string;
-	last_name: string;
-	username: string;
-	slug: string;
-	full_name: string;
-	gender: string;
-	occupation: string;
-	phone_number: string;
-	country: string;
-	city: string;
-	reputation: string;
-	avatar: string;
-	date_joined: string;
+  status_code: number;
+  object_label: string;
+  data: User;
 }
+
+// export interface UserResponse {
+//   status_code: number;
+//   object_label: string;
+//   data: {
+//     id: string;
+//     email: string;
+//     first_name: string;
+//     last_name: string;
+//     username: string;
+//     slug: string;
+//     full_name: string;
+//     gender: string;
+//     occupation: string;
+//     phone_number: string;
+//     country: string;
+//     city: string;
+//     reputation: string;
+//     avatar: string;
+//     date_joined: string;
+//   };
+// }
 export interface RegisterUserData extends UserCommonData {
 	username: string;
 	first_name: string;
