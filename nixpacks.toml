@@ -1,0 +1,9 @@
+providers = ["python"]
+
+[phases.install]
+cmds = [
+  "pip install -r requirements/production.txt"
+]
+
+[start]
+cmd = "bash railway_start.sh"
