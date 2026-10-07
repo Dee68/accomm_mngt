@@ -38,8 +38,8 @@ export default function Post() {
     return (
       <TabsContent value="posts">
         <div className="p-4">
-          <p className="text-muted-foreground">
-            You haven&apos;t created any posts yet.
+          <p className='h2-semibold dark:text-lime-500'>
+            You haven&apos;t created any posts yet. 
           </p>
         </div>
       </TabsContent>

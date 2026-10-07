@@ -1,15 +1,19 @@
 # Accommodation Center
+**Live demo:** https://my-deployment-url.com
 
 A full-stack platform for managing residential buildings. Tenants are
 assigned to apartments, maintenance issues are tracked from report to
 resolution, and a community forum lets residents coordinate with each
 other. Built with Django, Next.js, PostgreSQL, and Celery.
 
+![Accommodation Center home feed](docs/screenshots/home-feed.webp)
+
 ## Features
 
 **For tenants**
 - Register, activate via email, and sign in with a password or Google OAuth
-- View their apartment assignment
+- View and manage their apartment assignment
+- Upload a profile avatar (stored in Cloudinary)
 - Report maintenance issues to their building
 - Create and interact with community forum posts
 - Bookmark and vote on posts
@@ -25,6 +29,8 @@ other. Built with Django, Next.js, PostgreSQL, and Celery.
 - Manage apartments, tenants, issues, and technicians
 - Assign issues to technicians (with automatic email notification)
 - Monitor background tasks via Flower
+- Review and act on user reports
+- Moderate users (banned after five reports, with automatic account deactivation)
 
 ## Stack
 
@@ -74,10 +80,12 @@ Once the containers are healthy, the application is available at:
 
 ## Running tests
 
-```bash
-docker compose -f local.yml exec api pytest
-```
+The endpoint surface is covered by the pytest suite — see
+[Running tests](#running-tests). To run just the API tests:
 
+```bash
+docker compose -f local.yml exec api pytest core_apps/ -v
+```
 The full suite is 333 tests covering models, views, serializers,
 permissions, forms, admin configuration, signals, background tasks,
 email delivery, and URL routing. The suite runs in approximately 25
