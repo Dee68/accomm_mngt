@@ -1,9 +1,5 @@
-providers = ["python"]
+[phases.setup]
+nixPkgs = ["python312"]
 
 [phases.install]
-cmds = [
-  "python -m venv /opt/venv && . /opt/venv/bin/activate && pip install -r requirements/production.txt"
-]
-
-[start]
-cmd = "bash railway_start.sh"
+cmds = ["pip install -r requirements/production.txt"]
