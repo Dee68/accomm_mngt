@@ -1,27 +1,22 @@
 from os import getenv, path
 from dotenv import load_dotenv
 
-from .base import * #noqa
+from .base import *  # noqa
 from .base import BASE_DIR
 
-
-
-
-# local environment files
-local_env_file = path.join(BASE_DIR, ".envs", ".env.production")
-
-if path.isfile(local_env_file):
-    load_dotenv(local_env_file)
+# Production environment file (used for local testing of prod settings)
+env_file = path.join(BASE_DIR, ".envs", ".env.production")
+if path.isfile(env_file):
+    load_dotenv(env_file)
 
 SITE_NAME = getenv("SITE_NAME")
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = getenv("DJANGO_SECRET_KEY",)
 
+SECRET_KEY = getenv("DJANGO_SECRET_KEY")
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
 
-ADMINS = [("Api Golden","api.goldenventures@gmail.com"),]
-# add changes here
+ADMINS = [("Api Golden", "api.goldenventures@gmail.com")]
+
 EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
 EMAIL_HOST = getenv("EMAIL_HOST")
 EMAIL_HOST_USER = getenv("EMAIL_HOST_USER")
@@ -32,24 +27,30 @@ DEFAULT_FROM_EMAIL = getenv("DEFAULT_FROM_EMAIL")
 SERVER_EMAIL = getenv("DEFAULT_FROM_EMAIL")
 DOMAIN = getenv("DOMAIN")
 
-SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO","https")
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
-SECURE_SSL_REDIRECT = getenv("DJANGO_SECURE_SSL_REDIRECT","True") == "True"
+SECURE_SSL_REDIRECT = getenv("DJANGO_SECURE_SSL_REDIRECT", "True") == "True"
 
 SESSION_COOKIE_SECURE = True
 
 CSRF_COOKIE_SECURE = True
 
-SECURE_HSTS_SECONDS = 300
+SECURE_HSTS_SECONDS = int(getenv("DJANGO_SECURE_HSTS_SECONDS", "2592000"))
 
-SECURE_HSTS_INCLUDE_SUBDOMANS = (getenv("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS","True") == "True")
+SECURE_HSTS_INCLUDE_SUBDOMAINS = (
+    getenv("DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS", "True") == "True"
+)
 
-SECURE_HSTS_PRELOAD = getenv("DJANGO_SECURE_HSTS_PRELOAD","True") == "True"
+SECURE_HSTS_PRELOAD = getenv("DJANGO_SECURE_HSTS_PRELOAD", "True") == "True"
 
-SECURE_CONTENT_NOSNIFF = getenv("DJANGO_SECURE_CONTENT_NOSNIFF","True") == "True"
+SECURE_CONTENT_NOSNIFF = (
+    getenv("DJANGO_SECURE_CONTENT_NOSNIFF", "True") == "True"
+)
 
-# add trusted domain names(origins) in production
-#CSRF_TRUSTED_ORIGINS = ["https://accomm_mngt.com","www.accomm_mngt.com"]
+CSRF_TRUSTED_ORIGINS = getenv("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
+
+
+
 
 LOGGING = {
     "version":1,
