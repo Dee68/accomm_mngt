@@ -2,7 +2,7 @@ providers = ["python"]
 
 [phases.install]
 cmds = [
-  "pip install -r requirements/production.txt"
+  ". /opt/venv/bin/activate && pip install -r requirements/production.txt"
 ]
 
 [start]
