@@ -358,7 +358,7 @@ def test_deleting_reporter_deletes_issue(issue_dependencies):
         apartment=apartment,
         reported_by=user,
         title="Broken heater",
-        description="The heater is not working.",
+        description="The heater has not working.",
     )
 
     issue_id = issue.pk
