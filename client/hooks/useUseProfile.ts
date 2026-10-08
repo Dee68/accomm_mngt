@@ -5,5 +5,5 @@ export function useUseProfile(){
     const {isAuthenticated} = useAppSelector((state)=>state.auth);
     const {data,isLoading,isError} = useGetUserProfileQuery(undefined,{skip:!isAuthenticated});
 
-    return {profile:data?.profile, isLoading, isError};
+    return {profile:data, isLoading, isError};
 }

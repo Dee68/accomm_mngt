@@ -10,7 +10,7 @@ export default function Post() {
 
   // Unwrap the GenericJSONRenderer envelope
   // Response shape: { status_code, object_label, data: { count, results } }
-  const posts = data?.data?.results ?? [];
+  const posts = data?.results ?? [];
 
   if (isLoading) {
     return (

@@ -12,7 +12,7 @@ import { EyeIcon, MessageSquareQuoteIcon } from 'lucide-react';
 
 export default function BookmarkedPostCard() {
     const { data, isLoading} = useGetAllMyBookmarksQuery();
-    const bookmarks = data?.data;
+    const bookmarks = data
     console.log("bookmarks -",bookmarks);
 
     const sortedBookmarks = sortByDateDescending(bookmarks?.results ?? [], "created_at",);

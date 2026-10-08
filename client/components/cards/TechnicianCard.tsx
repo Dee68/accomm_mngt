@@ -19,11 +19,11 @@ export default function TechnicianCard() {
     const searchTerm = useAppSelector((state)=>state.user.searchTerm);
     const page = useAppSelector((state)=>state.user.page);
     const {data, isLoading} = useGetAllTechniciansQuery({searchTerm, page});
-    const technicians = data?.non_tenant_profiles;
-    const totalCount = technicians?.count || 0;
+    const technicians = data
+    const totalCount = data?.count || 0;
     const totalPages = Math.ceil(totalCount / 9);
-    console.log("FULL API RESPONSE:", data);
-    console.log("NON-TENANT PROFILES:", data?.non_tenant_profiles);
+    //console.log("FULL API RESPONSE:", data);
+    //console.log("NON-TENANT PROFILES:", data?.non_tenant_profiles);
     if (isLoading) {
         return (
             <div className="flex-center pt-32">

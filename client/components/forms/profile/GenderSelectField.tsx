@@ -31,7 +31,7 @@ interface GenderSelectFieldProps {
 
 export default function GenderSelectField({setValue,control}:GenderSelectFieldProps) {
     const {data:profileData} = useGetUserProfileQuery();
-    const profile = profileData?.profile;
+    const profile = profileData
 
     useEffect(()=>{
         if (profile?.gender) {

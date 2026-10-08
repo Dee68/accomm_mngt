@@ -23,7 +23,7 @@ interface UpdateParamsProps {
 export default function UpdatePostForm({params}:UpdateParamsProps) {
     const postSlug = params.slug;
     const { data } = useGetSinglePostQuery(postSlug || "");
-    const post = data?.data;
+    const post = data
     console.log(post);
     const [ updatePost,{isLoading}] = useUpdatePostMutation();
 

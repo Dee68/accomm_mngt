@@ -20,7 +20,7 @@ function TenantCardContent(){
     const page = useAppSelector((state)=>state.user.page);
     const {data,isLoading} = useGetAllUsersQuery({searchTerm,page})
 
-    const totalCount = data?.profiles.count || 0;
+    const totalCount = data?.count || 0;
     const totalPages = Math.ceil(totalCount / 9)
 
     
@@ -36,10 +36,10 @@ function TenantCardContent(){
     return (
         <div>
             <UsersSearch />
-            <h1 className='flex-center font-robotoSlab dark:text-pumpkin text-4xl sm:text-5xl'>All Tenants - ({data?.profiles.results.length})</h1>
+            <h1 className='flex-center font-robotoSlab dark:text-pumpkin text-4xl sm:text-5xl'>All Tenants - ({data?.results.length})</h1>
             <div className='mt-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3'>
-                {data && data.profiles.results.length > 0 ? (
-                    data.profiles.results.map((tenant)=>(
+                {data && data.results.length > 0 ? (
+                    data.results.map((tenant)=>(
                         <Card key={tenant.id}>
                             <CardContent className='rounded-lg p-4'>
                                 <CardHeader className='flex-col-center text-center'>

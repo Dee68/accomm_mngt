@@ -46,7 +46,7 @@ export default function UpdateIssueForm({ params }: UpdateParamsProps) {
 
   // Populate the form with the current status once the issue loads
   useEffect(() => {
-    const currentStatus = issueResponse?.data?.status;
+    const currentStatus = issueResponse?.status;
     if (currentStatus) {
       reset({ status: currentStatus });
     }

@@ -8,7 +8,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 function HeaderContent(){
     const {data} = useGetUserProfileQuery();
     const {theme} = useTheme();
-    const profile = data?.profile;
+    const profile = data
 
     return (
         <div className="flex flex-col gap-2">

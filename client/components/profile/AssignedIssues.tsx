@@ -7,10 +7,10 @@ import IssueCard from '../cards/IssueCard';
 import ProtectedRoute from '../shared/ProtectedRoutes';
 
 function AssignedIssuesContent() {
-    const { data:assignedIssues, isLoading} = useGetMyAssignedIssuesQuery("")
-    const myAssignedIssues = assignedIssues?.data
+    const { data:assignedIssues, isLoading} = useGetMyAssignedIssuesQuery()
+    const myAssignedIssues = assignedIssues
 
-    console.log("Assigne Issue Api Response:", assignedIssues);
+    //console.log("Assigne Issue Api Response:", assignedIssues);
 
     if (isLoading) {
         return (

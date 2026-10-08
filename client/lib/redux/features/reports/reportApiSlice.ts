@@ -12,10 +12,15 @@ export const reportApiSlice = baseApiSlice.injectEndpoints({
             }),
             invalidatesTags:["Report"]
         }),
-        getMyReports:builder.query<MyReportsResponse,void>({
-            query:()=> "/reports/me/",
-            providesTags:["Report"],
-        }),
+        // getMyReports:builder.query<MyReportsResponse,void>({
+        //     query:()=> "/reports/me/",
+        //     providesTags:["Report"],
+        // }),
+        getMyReports: builder.query<MyReportsResponse["data"], void>({
+            query: () => "/reports/me/",
+            transformResponse: (response: MyReportsResponse) => response.data,
+            providesTags: ["Report"],
+            }),
 
     }),
 });

@@ -10,7 +10,7 @@ import { formatDate } from '@/utils';
 
 export default function Reports() {
     const {data, isLoading} = useGetMyReportsQuery();
-    const myReports = data?.data;
+    const myReports = data
     if (isLoading) {
         <div className='flex-center pt-32'>
             <Spinner size='xl' />

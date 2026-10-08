@@ -1,118 +1,127 @@
 export interface UserState {
-	user: {
-		searchTerm: string;
-		page: number;
-	};
+  user: {
+    searchTerm: string;
+    page: number;
+  };
 }
 
 export interface PostState {
-	post: {
-		page: number;
-	};
+  post: {
+    page: number;
+  };
 }
 
 export interface Reply {
-	id: string;
-	post: number;
-	author_username: string;
-	avatar: string;
-	body: string;
-	created_at: string;
-	updated_at: string;
+  id: string;
+  post: number;
+  author_username: string;
+  avatar: string;
+  body: string;
+  created_at: string;
+  updated_at: string;
 }
 
 interface Post {
-	id: string;
-	title: string;
-	slug: string;
-	body: string;
-	tags: string[];
-	author_username: string;
-	is_bookmarked: boolean;
-	created_at: string;
-	updated_at: string;
-	view_count: number;
-	upvotes: number;
-	downvotes: number;
-	is_upvoted: boolean;
-	replies_count: number;
-	avatar: string;
-	replies: Reply[];
+  id: string;
+  title: string;
+  slug: string;
+  body: string;
+  tags: string[];
+  author_username: string;
+  is_bookmarked: boolean;
+  created_at: string;
+  updated_at: string;
+  view_count: number;
+  upvotes: number;
+  downvotes: number;
+  is_upvoted: boolean;
+  replies_count: number;
+  avatar: string;
+  replies: Reply[];
 }
 
 export interface PostsResponse {
-	posts: {
-		count: number;
-		next: null | string;
-		previous: null | string;
-		results: Post[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Post[];
+  };
 }
 
 export interface MyPostsResponse {
-	my_posts: {
-		count: number;
-		next: null | string;
-		previous: null | string;
-		results: Post[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Post[];
+  };
 }
 
 export interface PostData {
-	title: string;
-	tags: string[];
-	body: string;
+  title: string;
+  tags: string[];
+  body: string;
 }
 
 export interface BookmarkResponse {
-	message: string;
+  message: string;
 }
 
 export interface UpvoteDownvoteResponse {
-	message: string;
+  message: string;
 }
+
 export interface ReplyData {
-	body: string;
+  body: string;
 }
+
 export interface ReplyPostData extends ReplyData {
-	postId: string | undefined;
+  postId: string | undefined;
 }
+
 export interface ReplyResponse {
-	reply: {
-		id: string;
-		post: number;
-		author_username: string;
-		body: string;
-		created_at: string;
-		updated_at: string;
-	};
+  status_code: number;
+  object_label: string;
+  data: Reply;
 }
+
 export interface UpdatePostData {
-	postSlug: string;
-	title: string;
-	body: string;
+  postSlug: string;
+  title: string;
+  body: string;
 }
 
 export interface PostResponse {
-	post: Post;
+  status_code: number;
+  object_label: string;
+  data: Post;
 }
 
 export interface PostsByTagResponse {
-	posts_by_tag: {
-		count: number;
-		next: null | string;
-		previous: null | string;
-		results: Post[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Post[];
+  };
 }
 
 export interface RepliesResponse {
-	replies: {
-		count: number;
-		next: null | string;
-		previous: null | string;
-		results: Reply[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Reply[];
+  };
 }
 
 export interface BookmarkedPostsResponse {
@@ -125,162 +134,179 @@ export interface BookmarkedPostsResponse {
     results: Post[];
   };
 }
+
 interface TopPost {
-	id: string;
-	title: string;
-	slug: string;
-	author_username: string;
-	upvotes: number;
-	view_count: number;
-	replies_count: number;
-	avatar: string;
-	created_at: string;
+  id: string;
+  title: string;
+  slug: string;
+  author_username: string;
+  upvotes: number;
+  view_count: number;
+  replies_count: number;
+  avatar: string;
+  created_at: string;
 }
 
 interface PopularTag {
-	name: string;
-	slug: string;
-	post_count: number;
+  name: string;
+  slug: string;
+  post_count: number;
 }
 
 export interface PopularTagResponse {
-	popular_tags: {
-		count: number;
-		next: null | string;
-		previous: null | string;
-		results: PopularTag[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: PopularTag[];
+  };
 }
 
 export interface TopPostsResponse {
-	top_posts: {
-		count: number;
-		next: null | string;
-		previous: null | string;
-		results: TopPost[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: TopPost[];
+  };
 }
+
 interface Report {
-	id: string;
-	title: string;
-	description: string;
-	created_at: string;
+  id: string;
+  title: string;
+  description: string;
+  created_at: string;
 }
 
 export interface MyReportsResponse {
-	reports: {
-		count: number;
-		next: null | string;
-		previous: null | string;
-		results: Report[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Report[];
+  };
 }
 
 export interface ReportTenantData {
-	title: string;
-	description: string;
-	reported_user_username: string;
+  title: string;
+  description: string;
+  reported_user_username: string;
 }
 
 export interface ReportTenantResponse {
-	report: Report;
+  status_code: number;
+  object_label: string;
+  data: Report;
 }
 
 export interface IssueData {
-	title: string;
-	description: string;
-	status: "reported" | "resolved" | "in_progress";
-	priority: "low" | "medium" | "high";
+  title: string;
+  description: string;
+  status: "reported" | "resolved" | "in_progress";
+  priority: "low" | "medium" | "high";
 }
 
 export interface ReportIssueData extends IssueData {
-	apartmentId: string;
+  apartmentId: string;
 }
 
 export interface Issue {
-	id: string;
-	apartment_unit: string;
-	reported_by: string;
-	title: string;
-	description: string;
-	status: "reported" | "resolved" | "in_progress";
-	priority: "low" | "medium" | "high";
-	view_count: number;
-	assigned_to?: string;
+  id: string;
+  apartment_unit: string;
+  reported_by: string;
+  title: string;
+  description: string;
+  status: "reported" | "resolved" | "in_progress";
+  priority: "low" | "medium" | "high";
+  view_count: number;
+  assigned_to?: string;
 }
 
 export interface IssueResponse {
-	issue: Issue;
+  status_code: number;
+  object_label: string;
+  data: Issue;
 }
 
 export interface UpdateIssueResponse {
-	issue: {
-		title: string;
-		description: string;
-		apartment: string;
-		reported_by: string;
-		status: "reported" | "resolved" | "in_progress";
-		resolved_by: string;
-		resolved_on: string;
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    title: string;
+    description: string;
+    apartment: string;
+    reported_by: string;
+    status: "reported" | "resolved" | "in_progress";
+    resolved_by: string;
+    resolved_on: string;
+  };
 }
 
 export interface IssueStatusData {
-	status: string;
+  status: string;
 }
 
 export interface UpdateIssueData extends IssueStatusData {
-	issueId: string;
+  issueId: string;
 }
+
 export interface MyIssuesResponse {
-	my_issues: {
-		count: number;
-		next?: string;
-		previous?: string;
-		results: Issue[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Issue[];
+  };
 }
 
 export interface MyAssignedIssuesResponse {
-	assigned_issues: {
-		count: number;
-		next?: string;
-		previous?: string;
-		results: Issue[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Issue[];
+  };
 }
+
 export interface ApartmentData {
-	unit_number: string;
-	building: string;
-	floor: number;
+  unit_number: string;
+  building: string;
+  floor: number;
 }
 
 export interface ApartmentResponse {
-	apartment: {
-		id: string;
-		created_at: string;
-		unit_number: string;
-		building: string;
-		floor: number;
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    id: string;
+    created_at: string;
+    unit_number: string;
+    building: string;
+    floor: number;
+  };
 }
 
 export interface LeftNavLink {
-	path: string;
-	label: string;
-	imgLocation: string;
+  path: string;
+  label: string;
+  imgLocation: string;
 }
 
 export interface UserCommonData {
-	email: string;
-	password: string;
+  email: string;
+  password: string;
 }
 
-// export interface User {
-// 	first_name: string;
-// 	last_name: string;
-// 	email: string;
-// }
 export interface User {
   id: string;
   email: string;
@@ -305,109 +331,88 @@ export interface UserResponse {
   data: User;
 }
 
-// export interface UserResponse {
-//   status_code: number;
-//   object_label: string;
-//   data: {
-//     id: string;
-//     email: string;
-//     first_name: string;
-//     last_name: string;
-//     username: string;
-//     slug: string;
-//     full_name: string;
-//     gender: string;
-//     occupation: string;
-//     phone_number: string;
-//     country: string;
-//     city: string;
-//     reputation: string;
-//     avatar: string;
-//     date_joined: string;
-//   };
-// }
 export interface RegisterUserData extends UserCommonData {
-	username: string;
-	first_name: string;
-	last_name: string;
-	re_password: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  re_password: string;
 }
 
 export interface LoginUserData extends UserCommonData {}
 
 export interface ActivateUserData {
-	uid: string;
-	token: string;
+  uid: string;
+  token: string;
 }
+
 export interface ResetPasswordConfirmData extends ActivateUserData {
-	new_password: string;
-	re_new_password: string;
+  new_password: string;
+  re_new_password: string;
 }
+
 export interface ResetPasswordData {
-	email: string;
+  email: string;
 }
 
 export interface RegisterUserResponse {
-	id: string;
-	username: string;
-	first_name: string;
-	last_name: string;
-	email: string;
+  id: string;
+  username: string;
+  first_name: string;
+  last_name: string;
+  email: string;
 }
+
 export interface LoginResponse {
-	message: string;
+  message: string;
 }
+
 export interface SocialAuthArgs {
-	provider: string;
-	state: string;
-	code: string;
+  provider: string;
+  state: string;
+  code: string;
 }
+
 export interface SocialAuthResponse {
-	message: string;
-	user: User;
+  message: string;
+  user: User;
 }
 
 export interface Profile {
-	id: string;
-	slug: string;
-	first_name: string;
-	last_name: string;
-	username: string;
-	full_name: string;
-	gender: "male" | "female";
-	country_of_origin: string;
-	city_of_origin: string;
-	bio?: string;
-	occupation:
-		| "mason"
-		| "carpenter"
-		| "plumber"
-		| "roofer"
-		| "painter"
-		| "electrician"
-		| "hvac"
-		| "tenant";
-	reputation: number;
-	date_joined: string;
-	avatar?: string;
-	average_rating: number;
-	apartment: {
-		id: string;
-		created_at: string;
-		unit_number: string;
-		building: string;
-		floor: number;
-	} | null;
+  id: string;
+  slug: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+  full_name: string;
+  gender: "male" | "female";
+  country_of_origin: string;
+  city_of_origin: string;
+  bio?: string;
+  occupation: Occupation;
+  reputation: number;
+  date_joined: string;
+  avatar?: string;
+  average_rating: number;
+  apartment: {
+    id: string;
+    created_at: string;
+    unit_number: string;
+    building: string;
+    floor: number;
+  } | null;
 }
 
 export interface ProfilesResponse {
-	profiles: {
-		count: number;
-		next?: string;
-		previous?: string;
-		results: Profile[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Profile[];
+  };
 }
+
 export interface Rating {
   id: string;
   rating: number;
@@ -425,53 +430,51 @@ export interface RatingData {
   rating: number;
   comment: string;
 }
+
 export interface NonTenantResponse {
-	non_tenant_profiles: {
-		count: number;
-		next?: string;
-		previous?: string;
-		results: Profile[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Profile[];
+  };
 }
+
 export interface QueryParams {
-	page?: number;
-	searchTerm?: string;
+  page?: number;
+  searchTerm?: string;
 }
 
 export interface PostQueryParams {
-	page?: number;
+  page?: number;
 }
 
 export interface ProfileResponse {
-	profile: Profile;
+  status_code: number;
+  object_label: string;
+  data: Profile;
 }
 
 export interface ProfileData {
-	first_name: string;
-	last_name: string;
-	username: string;
-	gender: "male" | "female";
-	bio?: string;
-	country_of_origin: string;
-	city_of_origin: string;
-	occupation:
-		| "mason"
-		| "carpenter"
-		| "plumber"
-		| "roofer"
-		| "painter"
-		| "electrician"
-		| "hvac"
-		| "tenant";
-	phone_number: string;
+  first_name: string;
+  last_name: string;
+  username: string;
+  gender: "male" | "female";
+  bio?: string;
+  country_of_origin: string;
+  city_of_origin: string;
+  occupation: Occupation;
+  phone_number: string;
 }
 
 export type Occupation =
-	| "mason"
-	| "carpenter"
-	| "plumber"
-	| "roofer"
-	| "painter"
-	| "electrician"
-	| "hvac"
-	| "tenant";
+  | "mason"
+  | "carpenter"
+  | "plumber"
+  | "roofer"
+  | "painter"
+  | "electrician"
+  | "hvac"
+  | "tenant";

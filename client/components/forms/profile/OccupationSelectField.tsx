@@ -34,7 +34,7 @@ interface OccupationSelectFieldProps{
 
 export default function OccupationSelectField({setValue,control}:OccupationSelectFieldProps) {
     const {data:profileData} = useGetUserProfileQuery();
-    const profile = profileData?.profile;
+    const profile = profileData
 
     useEffect(() => {
       if (profile?.occupation) {

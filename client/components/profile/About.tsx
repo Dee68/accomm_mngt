@@ -10,7 +10,7 @@ import ProtectedRoute from "../shared/ProtectedRoutes";
 
 function AboutContent(){
     const {data,isLoading} = useGetUserProfileQuery();
-    const profile = data?.profile;
+    const profile = data
 
     if (isLoading) {
         return (

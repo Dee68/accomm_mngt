@@ -15,8 +15,8 @@ export default function PostCard() {
     const page = useAppSelector((state:PostState)=>state.post.page);
     const {data, isLoading} = useGetAllPostsQuery({page});
 
-   console.log(data);
-   const all_data = data?.data;
+   //console.log(data);
+   const all_data = data
 
     const totalCount = all_data?.count || 0;
     const totalPages = Math.ceil(totalCount / 9);

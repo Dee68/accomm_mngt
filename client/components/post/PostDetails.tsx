@@ -14,6 +14,7 @@ import { MessageCircleMoreIcon } from 'lucide-react';
 import RepliesList from './RepliesList';
 import ProtectedRoute from '../shared/ProtectedRoutes';
 import CreateReplyForm from '../forms/add-reply/CreateReplyForm';
+import { Reply } from "@/types";
 
 interface PostDetailProps {
     params:{
@@ -26,13 +27,15 @@ function PostDetailsContent({params}:PostDetailProps){
     const {data,isLoading,error} = useGetSinglePostQuery(slug);
 
     
-    const post = data?.data;
+    const post = data
 
     const [upvotePost, {isLoading:isUpvoteLoading}] = useUpvotePostMutation();
     const [downvotePost, {isLoading:isDownvoteLoading}] = useDownvotePostMutation();
     const [bookmarkPost, {isLoading:isBookmarkLoading}] = useBookmarkPostMutation();
 
-    const sortedReplies = sortByDateDescending(post?.replies ?? [], "created_at");
+   const sortedReplies: Reply[] = post?.replies
+    ? sortByDateDescending(post.replies, "created_at")
+    : [];
 
     const handleUpvote = ()=>{
         post?.id && upvotePost(post.id);

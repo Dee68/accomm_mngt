@@ -19,7 +19,7 @@ import { Input } from '@/components/ui/input';
 
 export default function EditProfileForm() {
     const {data} = useGetUserProfileQuery();
-    const profile = data?.profile;
+    const profile = data
 
     const [avatar,setAvatar] = useState("");
     const [uploading,setUploading] = useState(false);

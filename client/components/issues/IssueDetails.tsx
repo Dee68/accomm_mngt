@@ -19,18 +19,16 @@ interface IssueDetailsProps{
 
 export default function IssueDetails({params}:IssueDetailsProps) {
     const id = params.id
-    //console.log("ID from params:", id);
     const {data} = useGetSingleIssueQuery(id)
 
     console.log("Issues API response (raw data):", data);
-    const issue = data?.data;
+    const issue = data
 
-    console.log("Issues API response:", issue);
     const router = useRouter()
 
     const {data:currentUser} = useGetUserProfileQuery()
-    const canUpdate = issue?.assigned_to === currentUser?.profile.full_name
-    const canDelete = issue?.reported_by === currentUser?.profile.full_name
+    const canUpdate = issue?.assigned_to === currentUser?.full_name
+    const canDelete = issue?.reported_by === currentUser?.full_name
 
     const [deleteIssue] = useDeleteIssueMutation()
 
