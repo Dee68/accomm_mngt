@@ -93,5 +93,11 @@ LOGGING = {
     }
 }
 
+CORS_ALLOWED_ORIGINS = [
+    "https://client-production-8788.up.railway.app",
+    "http://localhost:3000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 

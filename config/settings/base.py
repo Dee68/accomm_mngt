@@ -54,6 +54,7 @@ THIRD_PARTY_APPS = ['rest_framework',
                     'cloudinary',
                     'django_celery_beat',
                     'rest_framework_simplejwt.token_blacklist',
+                    'corsheaders',
 ]
 
 LOCAL_APPS = ["core_apps.issues",
@@ -69,6 +70,7 @@ LOCAL_APPS = ["core_apps.issues",
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
