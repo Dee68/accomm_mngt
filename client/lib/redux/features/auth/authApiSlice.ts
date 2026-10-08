@@ -67,7 +67,7 @@ export const authApiSlice = baseApiSlice.injectEndpoints({
         }),
         getUser: builder.query<User,void>({
             query: ()=> "/auth/users/me/",
-            providesTags:["Issue"]
+            providesTags:["User"]
         }),
         // getUser: builder.query<User, void>({
         // query: () => "/auth/users/me/",
@@ -87,7 +87,6 @@ export const authApiSlice = baseApiSlice.injectEndpoints({
     }),
 });
 
-//generated hooks from mutations & queries
 export const {
     useSocialAuthenticationMutation,
     useActivateUserMutation,

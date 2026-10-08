@@ -7,7 +7,7 @@ import {Mutex} from "async-mutex";
 const mutex = new Mutex();
 
 const baseQuery = fetchBaseQuery({
-  baseUrl: process.env.NEXT_PUBLIC_API_URL || "/api/v1",
+  baseUrl: process.env.NEXT_PUBLIC_API_URL,
   credentials: "include",
 });
 
