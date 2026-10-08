@@ -245,7 +245,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    "SIGNING_KEY":getenv("SIGNING_KEY") or SECRET_KEY,
+    "SIGNING_KEY":getenv("SIGNING_KEY") or getenv("DJANGO_SECRET_KEY"),
     "ACCESS_TOKEN_LIFETIME":timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME":timedelta(days=1),
     "ROTATE_REFRESH_TOKENS":True,
