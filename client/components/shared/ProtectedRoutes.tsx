@@ -1,38 +1,33 @@
 "use client";
 
-import { setAuth, setLogout } from "@/lib/redux/features/auth/authSlice";
-import { useAppDispatch } from "@/lib/redux/hooks/typedHooks";
-import { getCookie } from "cookies-next";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useAppSelector } from "@/lib/redux/hooks/typedHooks";
+import { useGetUserQuery } from "@/lib/redux/features/auth/authApiSlice";
 import Spinner from "@/components/shared/Spinner";
 
-function ProtectedRoute({children}:{children:React.ReactNode}){
-    const dispatch = useAppDispatch();
-    const router = useRouter();
-    const [isLoading, setIsLoading] = useState(true);
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const { isAuthenticated } = useAppSelector((state) => state.auth);
+  const { isLoading, isError } = useGetUserQuery();
 
-    useEffect(()=>{
-        const handleAuthState = async ()=>{
-            const isLoggedIn = getCookie("logged_in")==="true"
-            if (isLoggedIn) {
-                dispatch(setAuth())
-            }else{
-                dispatch(setLogout())
-                router.push("/login")
-            }
-            setIsLoading(false)
-        }
-        handleAuthState()
-    },[dispatch,router]);
-    if (isLoading) {
-        return (
-            <div className="flex-center pt-32">
-                <Spinner size="xl" />
-            </div>
-        )
+  useEffect(() => {
+    if (!isLoading && isError) {
+      router.push("/login");
     }
-    return <>{children}</>
-};
+  }, [isLoading, isError, router]);
+
+  if (isLoading) {
+    return (
+      <div className="flex-center pt-32">
+        <Spinner size="xl" />
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) return null;
+
+  return <>{children}</>;
+}
 
 export default ProtectedRoute;

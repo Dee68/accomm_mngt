@@ -74,5 +74,4 @@ const isTechnician =
 
 return { handleLogout, filteredNavLinks, isAuthenticated, isTechnician, occupation };
 
-  //return { handleLogout, filteredNavLinks, isAuthenticated };
 }
