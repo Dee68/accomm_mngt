@@ -19,6 +19,14 @@ if path.isfile(local_env_file):
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Accommodation Management API",
+    "DESCRIPTION": "An Accommodation management API for accommodation center",
+    "VERSION": "v1",
+    "SERVE_INCLUDE_SCHEMA": False,
+    "CONTACT": {"email": "api.goldenventures@gmail.com"},
+    "LICENSE": {"name": "MIT License"},
+}
 
 
 
@@ -37,7 +45,8 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = ['rest_framework',
                     'django_countries',
                     'phonenumber_field',
-                    'drf_yasg','djoser',
+                    'drf_spectacular',
+                    'djoser',
                     'social_django',
                     'taggit',
                     'django_filters',
@@ -220,6 +229,7 @@ REST_FRAMEWORK = {
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
     "PAGE_SIZE":10,
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_THROTTLE_CLASSES":(
         "rest_framework.throttling.AnonRateThrottle",
         "rest_framework.throttling.UserRateThrottle",
