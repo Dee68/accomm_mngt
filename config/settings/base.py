@@ -50,11 +50,12 @@ THIRD_PARTY_APPS = ['rest_framework',
                     'social_django',
                     'taggit',
                     'django_filters',
-                    'djcelery_email',
+                    #'djcelery_email',
                     'cloudinary',
                     'django_celery_beat',
                     'rest_framework_simplejwt.token_blacklist',
                     'corsheaders',
+                    'anymail',
 ]
 
 LOCAL_APPS = ["core_apps.issues",

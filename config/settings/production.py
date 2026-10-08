@@ -17,14 +17,23 @@ ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
 
 ADMINS = [("Api Golden", "api.goldenventures@gmail.com")]
 
-EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
-EMAIL_HOST = getenv("EMAIL_HOST")
-EMAIL_HOST_USER = getenv("EMAIL_HOST_USER")
-EMAIL_HOST_PASSWORD = getenv("SMTP_MAILGUN_PASSWORD")
-EMAIL_PORT = getenv("EMAIL_PORT")
-EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = getenv("DEFAULT_FROM_EMAIL")
-SERVER_EMAIL = getenv("DEFAULT_FROM_EMAIL")
+#EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
+EMAIL_BACKEND = "anymail.backends.resend.EmailBackend"
+
+ANYMAIL = {
+    "RESEND_API_KEY": getenv("RESEND_API_KEY"),
+}
+
+DEFAULT_FROM_EMAIL = getenv("DEFAULT_FROM_EMAIL", "onboarding@resend.dev")
+SERVER_EMAIL = DEFAULT_FROM_EMAIL
+
+# EMAIL_HOST = getenv("EMAIL_HOST")
+# EMAIL_HOST_USER = getenv("EMAIL_HOST_USER")
+# EMAIL_HOST_PASSWORD = getenv("SMTP_MAILGUN_PASSWORD")
+# EMAIL_PORT = getenv("EMAIL_PORT")
+# EMAIL_USE_TLS = True
+# DEFAULT_FROM_EMAIL = getenv("DEFAULT_FROM_EMAIL")
+# SERVER_EMAIL = getenv("DEFAULT_FROM_EMAIL")
 DOMAIN = getenv("DOMAIN")
 
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
