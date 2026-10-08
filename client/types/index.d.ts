@@ -116,12 +116,14 @@ export interface RepliesResponse {
 }
 
 export interface BookmarkedPostsResponse {
-	bookmarked_posts: {
-		count: number;
-		next: null | string;
-		previous: null | string;
-		results: Post[];
-	};
+  status_code: number;
+  object_label: string;
+  data: {
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Post[];
+  };
 }
 interface TopPost {
 	id: string;
