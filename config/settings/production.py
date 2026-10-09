@@ -104,6 +104,8 @@ LOGGING = {
 
 CORS_ALLOWED_ORIGINS = [
     "https://client-production-8788.up.railway.app",
+    "https://dimie.dev",
+    "https://www.dimie.dev",
     "http://localhost:3000",
 ]
 
