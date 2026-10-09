@@ -10,8 +10,6 @@ function AssignedIssuesContent() {
     const { data:assignedIssues, isLoading} = useGetMyAssignedIssuesQuery()
     const myAssignedIssues = assignedIssues
 
-    //console.log("Assigne Issue Api Response:", assignedIssues);
-
     if (isLoading) {
         return (
             <div className="flex-center pt-32">

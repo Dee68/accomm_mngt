@@ -1,8 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useGetMyAssignedIssuesQuery } from "@/lib/redux/features/issues/IssueApiSlice";
+import Spinner from "@/components/shared/Spinner";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
 
 type Issue = {
   id: string;
@@ -28,30 +30,23 @@ const priorityStyles: Record<Issue["priority"], string> = {
 };
 
 export default function AssignedIssuesPage() {
-  const [issues, setIssues] = useState<Issue[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data, isLoading, isError } = useGetMyAssignedIssuesQuery();
 
   useEffect(() => {
-    fetch(`/api/v1/issues/assigned/`, {
-      credentials: "include",
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load assigned issues");
-        return res.json();
-      })
-      .then((data) => {
-        setIssues(data.data.results);
-      })
-      .catch((err) => {
-        console.error(err);
-        toast.error("Could not load assigned issues");
-      })
-      .finally(() => setLoading(false));
-  }, []);
+    if (isError) {
+      toast.error("Could not load assigned issues");
+    }
+  }, [isError]);
 
-  if (loading) {
-    return <p className="p-6 text-baby_richBlack">Loading assigned issues...</p>;
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center pt-32">
+        <Spinner size="xl" />
+      </div>
+    );
   }
+
+  const issues = data?.results ?? [];
 
   return (
     <div className="p-6">
@@ -63,36 +58,36 @@ export default function AssignedIssuesPage() {
         </p>
       ) : (
         <div className="flex flex-col gap-4">
-        {issues.map((issue) => (
-  <Link
-    key={issue.id}
-    href={`/issue/update-issue/${issue.id}`}
-    className="bg-baby_rich light-border rounded-lg border p-5 shadow-platinum block transition hover:shadow-lg"
-  >
-    <div className="flex items-center justify-between mb-2">
-      <h2 className="h3-bold text-baby_richBlack">{issue.title}</h2>
-      <span
-        className={`rounded-full px-3 py-1 text-xs font-semibold ${priorityStyles[issue.priority]}`}
-      >
-        {issue.priority}
-      </span>
-    </div>
+          {issues.map((issue) => (
+            <Link
+              key={issue.id}
+              href={`/issue/update-issue/${issue.id}`}
+              className="bg-baby_rich light-border rounded-lg border p-5 shadow-platinum block transition hover:shadow-lg"
+            >
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="h3-bold text-baby_richBlack">{issue.title}</h2>
+                <span
+                  className={`rounded-full px-3 py-1 text-xs font-semibold ${priorityStyles[issue.priority]}`}
+                >
+                  {issue.priority}
+                </span>
+              </div>
 
-    <p className="text-baby_richBlack line-clamp-2">
-      {issue.description}
-    </p>
+              <p className="text-baby_richBlack line-clamp-2">
+                {issue.description}
+              </p>
 
-    <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-baby_richBlack">
-      <span>Apartment: {issue.apartment_unit}</span>
-      <span>Reported by: {issue.reported_by}</span>
-      <span
-        className={`rounded-full px-2 py-0.5 font-medium ${statusStyles[issue.status]}`}
-      >
-        {issue.status.replace("_", " ")}
-      </span>
-    </div>
-  </Link>
-))}
+              <div className="mt-3 flex flex-wrap items-center gap-4 text-sm text-baby_richBlack">
+                <span>Apartment: {issue.apartment_unit}</span>
+                <span>Reported by: {issue.reported_by}</span>
+                <span
+                  className={`rounded-full px-2 py-0.5 font-medium ${statusStyles[issue.status]}`}
+                >
+                  {issue.status.replace("_", " ")}
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
       )}
     </div>
