@@ -2,7 +2,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuthNavigation } from '@/hooks';
-import { useUseProfile } from '@/hooks/useUseProfile';
+//import { useUseProfile } from '@/hooks/useUseProfile';
+import { useGetUserProfileQuery } from "@/lib/redux/features/users/usersApiSlice";
 import { BookMarked, CircleUser, LogOut, User, Users } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react'
@@ -10,7 +11,8 @@ import React from 'react'
 export default function AuthAvatar() {
     const {handleLogout} = useAuthNavigation();
 
-    const {profile, isLoading, isError} = useUseProfile();
+    //const {profile, isLoading, isError} = useUseProfile(); 
+    const {data, isLoading, isError} = useGetUserProfileQuery()
     if (isLoading) {
         return null;
     }
@@ -19,11 +21,11 @@ export default function AuthAvatar() {
     }
   return (
     <div>
-      {profile && (
+      {data && (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Avatar className='border-pumpkin cursor-pointer border-2'>
-                    <AvatarImage alt='auth image' src={profile.avatar} />
+                    <AvatarImage alt='auth image' src={data.avatar} />
                     <AvatarFallback>
                         <CircleUser className='dark:text-platinum size-8'/>
                     </AvatarFallback>
