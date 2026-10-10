@@ -20,7 +20,7 @@ export default function useSocialAuth(authenticate:any, provider:string){
                 router.push("/welcome")
             }).catch(()=>{
                 toast.error("Login failed,try again!")
-                router.push("/login")
+                router.push("/auth/login")
             })
         }
         return ()=>{
