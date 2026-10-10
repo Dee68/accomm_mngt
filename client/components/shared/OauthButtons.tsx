@@ -6,7 +6,7 @@ import OauthButton from "./OauthButton";
 export default function OauthButtons(){
     return (
         <div className="mt-3 flex items-center justify-between gap-2">
-            <OauthButton provider="google" onClick={UseGoogle}>
+            <OauthButton provider="google-oauth2" onClick={()=>UseGoogle("google-oauth2", "google")}>
                 Sign in with Google
             </OauthButton>
         </div>

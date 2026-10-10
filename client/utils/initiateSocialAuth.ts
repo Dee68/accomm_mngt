@@ -11,14 +11,18 @@ export default async function InitiateSocialAuth(provider: string, redirect: str
             ? window.location.origin                                  // https://dimie.dev
             : process.env.NEXT_PUBLIC_DOMAIN;
 
+        console.log("[InitiateSocialAuth] args", { provider, redirect });
+
         const redirectUri = `${frontendBase}/auth/${redirect}`;       // https://dimie.dev/auth/google
         const url = `${apiBase}/auth/o/${provider}/?redirect_uri=${encodeURIComponent(redirectUri)}`;
 
+        console.log("[InitiateSocialAuth] url", url);
         const res = await fetch(url, {
             method: "GET",
             headers: { Accept: "application/json" },
             credentials: "include",
         });
+        console.log("[InitiateSocialAuth] status", res.status);
         const data: SocialAuthResponse = await res.json();
         if (res.status === 200 && typeof window !== "undefined") {
             window.location.replace(data.authorization_url);

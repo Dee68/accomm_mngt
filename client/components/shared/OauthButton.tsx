@@ -3,7 +3,7 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 
 interface Props {
-    provider:"google",
+    provider:"google" | "google-oauth2",
     children: React.ReactNode,
     [rest:string]: any
 }
