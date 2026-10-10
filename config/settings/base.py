@@ -268,7 +268,10 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_RETYPE":True,
     "ACTIVATION_URL":"activate/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_URL":"password-reset/{uid}/{token}",
-    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": getenv("REDIRECT_URIS","").split(","),
+    "SOCIAL_AUTH_ALLOWED_REDIRECT_URIS": [
+        https://dimie.dev,
+        https://api.dimie.dev,
+        ],#getenv("REDIRECT_URIS","").split(","),
     "SERIALIZERS":{
         "user_create": "core_apps.users.serializers.CreateUserSerializer",
         "current_user": "core_apps.users.serializers.CustomUserSerializer"

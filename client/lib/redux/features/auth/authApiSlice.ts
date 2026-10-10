@@ -81,7 +81,8 @@ export const authApiSlice = baseApiSlice.injectEndpoints({
                 headers: {
                     Accept:"application/json",
                     "Content-Type": "application/x-www-form-urlencoded",
-                }
+                },
+                credentials: 'include', 
             })
         })
     }),

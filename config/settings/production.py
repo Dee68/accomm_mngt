@@ -14,6 +14,7 @@ SITE_NAME = getenv("SITE_NAME")
 SECRET_KEY = getenv("DJANGO_SECRET_KEY")
 
 ALLOWED_HOSTS = getenv("DJANGO_ALLOWED_HOSTS", "").split(",")
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
 
 ADMINS = [("Api Golden", "api.goldenventures@gmail.com")]
 
