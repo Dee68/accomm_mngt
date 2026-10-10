@@ -6,6 +6,9 @@ import { useSocialAuthenticationMutation } from '@/lib/redux/features/auth/authA
 import { useSearchParams } from 'next/navigation';
 import React, { Suspense } from 'react'
 
+
+
+
 export default function GoogleLoginPage() {
   return (
     <Suspense fallback={
@@ -35,9 +38,3 @@ function GoogleLoginContent(){
    </div>   
   );
 }
-
-// function GoogleLoginContent(){
-//   const [googleAuthenticate] = useSocialAuthenticationMutation();
-//   useSocialAuth(googleAuthenticate,"google-oauth2");
-//   return null;
-// }

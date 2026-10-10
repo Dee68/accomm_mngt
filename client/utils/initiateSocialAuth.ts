@@ -9,11 +9,10 @@ export default async function InitiateSocialAuth(provider: string, redirect: str
         const apiBase = process.env.NEXT_PUBLIC_API_URL;              // https://api.dimie.dev/api/v1
         const frontendBase = typeof window !== "undefined"
             ? window.location.origin                                  // https://dimie.dev
-            : process.env.NEXT_PUBLIC_DOMAIN;                         // SSR fallback
+            : process.env.NEXT_PUBLIC_DOMAIN;
 
-        const url =
-            `${apiBase}/auth/o/${provider}/?redirect_uri=` +
-            `${encodeURIComponent(`${frontendBase}/api/v1/auth/${redirect}`)}`;
+        const redirectUri = `${frontendBase}/auth/${redirect}`;       // https://dimie.dev/auth/google
+        const url = `${apiBase}/auth/o/${provider}/?redirect_uri=${encodeURIComponent(redirectUri)}`;
 
         const res = await fetch(url, {
             method: "GET",
