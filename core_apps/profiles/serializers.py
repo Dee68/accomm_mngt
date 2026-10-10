@@ -4,6 +4,7 @@ from rest_framework import serializers
 from .models import Profile
 from core_apps.apartments.models import Apartment
 from core_apps.apartments.serializers import ApartmentSerializer
+from .validators import validate_avatar_size, validate_avatar_extension
 
 class ProfileSerializer(serializers.ModelSerializer):
     first_name = serializers.ReadOnlyField(source="user.first_name")
@@ -111,7 +112,10 @@ class UpdateProfileSerializer(serializers.ModelSerializer):
         return instance
         
 class AvatarUploadSerializer(serializers.ModelSerializer):
-    avatar = serializers.ImageField()
+    avatar = serializers.ImageField(
+        required=True,
+        validators=[validate_avatar_size, validate_avatar_extension]
+    )
     class Meta:
         model = Profile
         fields = ["avatar"]

@@ -33,25 +33,40 @@ export default function EditProfileForm() {
 		}
 	}, [profile, reset]);
 
+    const MAX_AVATAR_SIZE = 2 * 1024 * 1024;
+
     const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const file = e.target.files[0];
+        const file = e.target.files?.[0];
+        if (!file) return;
+        // validate file type & size
+        if (!file.type.startsWith("image/")) {
+                toast.error("Please choose an image file.");
+                e.target.value = "";
+                return;
+            }
 
-    const formData = new FormData();
-    formData.append("avatar", file);   // matches serializer field name
+        if (file.size > MAX_AVATAR_SIZE) {
+                toast.error("Avatar must be smaller than 2 MB.");
+                e.target.value = "";
+                return;
+            }
 
-    setUploading(true);
-    try {
-        await uploadAvatar(formData).unwrap();
-        // The view returns 202 + {"message": "Avatar upload started"}
-        // The actual avatar URL is set later by Celery — refetch after a beat.
-        toast.success("Avatar upload started");
-    } catch (error) {
-        const errorMessage = extractErrorMessage(error);
-        toast.error(errorMessage || "Failed to upload avatar");
-    } finally {
-        setUploading(false);
-    }
+           
+
+        const formData = new FormData();
+        formData.append("avatar", file);   // matches serializer field name
+
+        setUploading(true);
+        try {
+            await uploadAvatar(formData).unwrap();
+            
+            toast.success("Avatar upload started");
+        } catch (error) {
+            const errorMessage = extractErrorMessage(error);
+            toast.error(errorMessage || "Failed to upload avatar");
+        } finally {
+            setUploading(false);
+        }
     };
 
     const onSubmit = async(values:z.infer<typeof profileSchema>)=>{
