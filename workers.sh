@@ -1,2 +1,2 @@
 #!/bin/bash
-celery -A accomm_mngmt worker -l info --concurrency=2
+celery -A config worker -l info --concurrency=2
