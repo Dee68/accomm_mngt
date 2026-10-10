@@ -53,6 +53,25 @@ export const usersApiSlice = baseApiSlice.injectEndpoints({
       }),
       invalidatesTags: ["User"],
     }),
+    uploadAvatar: builder.mutation<{ message: string }, FormData>({
+      query: (formData) => ({
+        url: "/profiles/user/avatar/",
+        method: "PATCH",
+        body: formData,
+        formData: true,               // let the browser set multipart boundary
+      }),
+      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
+        try {
+          await queryFulfilled;
+          // 202 Accepted + Celery → refetch after the task has likely finished
+          setTimeout(() => {
+            dispatch(usersApiSlice.util.invalidateTags(["User"]));
+          }, 3000);
+        } catch {
+          /* error handled by the caller via .unwrap() */
+        }
+      },
+    }),
   }),
 });
 
@@ -61,4 +80,5 @@ export const {
   useGetAllTechniciansQuery,
   useUpdateUserProfileMutation,
   useGetUserProfileQuery,
+  useUploadAvatarMutation,
 } = usersApiSlice;
