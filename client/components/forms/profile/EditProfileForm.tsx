@@ -1,12 +1,12 @@
 "use client";
-import { useGetUserProfileQuery, useUpdateUserProfileMutation } from '@/lib/redux/features/users/usersApiSlice';
+import { useGetUserProfileQuery, useUpdateUserProfileMutation, useUploadAvatarMutation } from '@/lib/redux/features/users/usersApiSlice';
 import { TProfileSchema } from '@/lib/validationSchemas';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form';
-import axios from "axios";
 import * as z from "zod";
 import { profileSchema } from '@/lib/validationSchemas/ProfileSchema';
+
 import { extractErrorMessage } from '@/utils';
 import { toast } from 'react-toastify';
 import { FormFieldComponent } from '@/components/shared/forms/FormFieldComponent';
@@ -20,10 +20,9 @@ import { Input } from '@/components/ui/input';
 export default function EditProfileForm() {
     const {data} = useGetUserProfileQuery();
     const profile = data
-
-    const [avatar,setAvatar] = useState("");
     const [uploading,setUploading] = useState(false);
     const [updateUserProfile,{isLoading}] = useUpdateUserProfileMutation();
+    const [uploadAvatar, { isLoading: isUploadingAvatar }] = useUploadAvatarMutation();
     const router = useRouter();
 
     const {register,handleSubmit,control,setValue,reset,formState:{errors},} = useForm<TProfileSchema>();
@@ -34,31 +33,26 @@ export default function EditProfileForm() {
 		}
 	}, [profile, reset]);
 
-    const uploadFileHandler = async (e:React.ChangeEvent<HTMLInputElement>)=>{
-        if(!e.target.files) return;
-        const file = e.target.files[0];
-        const formData = new FormData();
-        formData.append("avatar",file);
-        setUploading(true);
-        try {
-            const config = {
-                headers:{
-                    "Content-Type":"multipart/form-data",
-                },
-            };
-            const {data} = await axios.patch(
-                "/api/v1/profiles/user/avatar/",
-                formData,
-                config,
-            );
-            setAvatar(data);
-            setUploading(false);
-        } catch (error) {
-            console.error("Error uploading file:", error);
-        }finally{
-            setUploading(false);
-        }
+    const uploadFileHandler = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    const file = e.target.files[0];
+
+    const formData = new FormData();
+    formData.append("avatar", file);   // matches serializer field name
+
+    setUploading(true);
+    try {
+        await uploadAvatar(formData).unwrap();
+        // The view returns 202 + {"message": "Avatar upload started"}
+        // The actual avatar URL is set later by Celery — refetch after a beat.
+        toast.success("Avatar upload started");
+    } catch (error) {
+        const errorMessage = extractErrorMessage(error);
+        toast.error(errorMessage || "Failed to upload avatar");
+    } finally {
+        setUploading(false);
     }
+    };
 
     const onSubmit = async(values:z.infer<typeof profileSchema>)=>{
         try {
@@ -148,3 +142,4 @@ export default function EditProfileForm() {
     </main>
   )
 }
+
