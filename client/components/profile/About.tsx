@@ -51,7 +51,7 @@ function AboutContent(){
                     <ProfileItem 
                     icon={<Map className="tab-icon"/>} 
                     label="Country" 
-                    value={capitalizeFirstLetter(countryName(profile?.country_field))}
+                    value={countryName(profile?.country_field)}
                     />
                     <ProfileItem 
                     icon={<MapPinnedIcon className="tab-icon"/>} 
