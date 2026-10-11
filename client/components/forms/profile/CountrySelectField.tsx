@@ -1,13 +1,12 @@
 "use client";
 
-import { countryOptions } from "@/constants";         // or from @/lib/countries
-import { useGetUserProfileQuery } from "@/lib/redux/features/users/usersApiSlice";
+import { countryOptions } from "@/constants";
 import { TProfileSchema } from "@/lib/validationSchemas";
 import Select from "react-select";
 import { Map } from "lucide-react";
 import dynamic from "next/dynamic";
-import React, { useEffect } from "react";
-import { Control, Controller, UseFormSetValue } from "react-hook-form";
+import React from "react";
+import { Control, Controller } from "react-hook-form";
 import customStyles from "../selectStyles";
 
 const ClientOnly = dynamic<{ children: React.ReactNode }>(
@@ -16,23 +15,10 @@ const ClientOnly = dynamic<{ children: React.ReactNode }>(
 );
 
 interface CountrySelectFieldProps {
-    setValue: UseFormSetValue<TProfileSchema>;
     control: Control<TProfileSchema>;
 }
 
-export default function CountrySelectField({
-    setValue,
-    control,
-}: CountrySelectFieldProps) {
-    const { data: profileData } = useGetUserProfileQuery();
-    const profile = profileData;
-
-    useEffect(() => {
-        if (profile?.country_field) {
-            setValue("country_field", profile.country_field);
-        }
-    }, [profile, setValue]);
-
+export default function CountrySelectField({ control }: CountrySelectFieldProps) {
     return (
         <div>
             <label htmlFor="country_field" className="h4-semibold dark:text-babyPowder">

@@ -1,4 +1,5 @@
 import { LeftNavLink } from "@/types";
+import { COUNTRY_OPTIONS } from "@/lib/countries";
 
 // Import your IssueData interface if it's defined in another file
 // import { IssueData } from '@/types';
@@ -30,6 +31,12 @@ export const occupationOptions = [
 	{ value: "hvac", label: "HVAC" },
 	{ value: "tenant", label: "Tenant" },
 ];
+
+
+export const countryOptions = COUNTRY_OPTIONS.map(({ code, name }) => ({
+    value: code,
+    label: name,
+}));
 
 export const leftNavLinks: LeftNavLink[] = [
 	{
