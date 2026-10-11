@@ -10,6 +10,8 @@ app = Celery("accomm_mngmt")
 # Load settings from Django settings file
 app.config_from_object("django.conf:settings", namespace="CELERY")
 
+# silen depreciation warnings
+app.conf.broker_connection_retry_on_startup = True
 # Auto-discover tasks from installed Django apps
 # lambda:settings.INSTALLED_APPS
 app.autodiscover_tasks()
