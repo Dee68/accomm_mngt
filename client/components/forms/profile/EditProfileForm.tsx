@@ -111,7 +111,7 @@ export default function EditProfileForm() {
             <OccupationSelectField setValue={setValue} control={control} />
             <FormFieldComponent 
                 label='Country of Origin' 
-                name='country_of_origin' 
+                name='country_field' 
                 register={register} 
                 errors={errors} 
                 placeholder='What Country?'
