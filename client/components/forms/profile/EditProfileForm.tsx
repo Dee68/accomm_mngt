@@ -13,9 +13,11 @@ import { FormFieldComponent } from '@/components/shared/forms/FormFieldComponent
 import { Contact2Icon, Map, MapPinnedIcon } from 'lucide-react';
 import GenderSelectField from './GenderSelectField';
 import OccupationSelectField from './OccupationSelectField';
+import CountrySelectField from './CountrySelectField';
 import Spinner from '@/components/shared/Spinner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+
 
 export default function EditProfileForm() {
     const {data} = useGetUserProfileQuery();
@@ -109,14 +111,15 @@ export default function EditProfileForm() {
             />
             <GenderSelectField setValue={setValue} control={control} />
             <OccupationSelectField setValue={setValue} control={control} />
-            <FormFieldComponent 
+            <CountrySelectField control={control} />
+            {/* <FormFieldComponent 
                 label='Country of Origin' 
                 name='country_field' 
                 register={register} 
                 errors={errors} 
                 placeholder='What Country?'
                 startIcon={<Map className='dark:text-babyPowder size-8' />}
-            />
+            /> */}
             <FormFieldComponent 
                 label='City of Origin' 
                 name='city_of_origin' 
