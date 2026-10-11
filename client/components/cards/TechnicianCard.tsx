@@ -2,7 +2,6 @@
 
 import { useGetAllTechniciansQuery } from "@/lib/redux/features/users/usersApiSlice";
 import { useAppSelector } from "@/lib/redux/hooks/typedHooks";
-//import { UserState } from "@/types";
 import { useTheme } from "next-themes";
 import Spinner from "../shared/Spinner";
 import UsersSearch from "../shared/search/UsersSearch";
@@ -13,6 +12,7 @@ import TechnicianCardDetails from "./TechnicianCardDetails";
 import PaginationSection from "../shared/PaginationSection";
 import { Button } from "../ui/button";
 import Link from "next/link";
+import { countryName } from "@/lib/countries";
 
 export default function TechnicianCard() {
     const {theme} = useTheme();
@@ -22,8 +22,6 @@ export default function TechnicianCard() {
     const technicians = data
     const totalCount = data?.count || 0;
     const totalPages = Math.ceil(totalCount / 9);
-    //console.log("FULL API RESPONSE:", data);
-    //console.log("NON-TENANT PROFILES:", data?.non_tenant_profiles);
     if (isLoading) {
         return (
             <div className="flex-center pt-32">
@@ -61,7 +59,7 @@ export default function TechnicianCard() {
                                 <CardDescription className='mt-4 space-y-2 border-b-0'>
                                 
                                         <TechnicianCardDetails 
-                                            country_of_origin = {technician.country_of_origin}
+                                            country_field = {countryName(technician.country_field)}
                                             occupation = {technician.occupation}
                                             date_joined = {technician.date_joined}
                                             average_rating = {technician.average_rating}
