@@ -4,9 +4,9 @@ export const COUNTRY_NAMES: Record<string, string> = {
   US: "United States",
   NG: "Nigeria",
   PL: "Poland",
-  UKR: "Ukraine",
-  RUS: "Russia",
-  GER: "Germany"
+  UA: "Ukraine",
+  RU: "Russia",
+  DE: "Germany"
   // ...other ones later
 };
 

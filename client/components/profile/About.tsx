@@ -12,7 +12,10 @@ import { countryName } from "@/lib/countries";
 function AboutContent(){
     const {data,isLoading} = useGetUserProfileQuery();
     const profile = data
-
+    console.log("[country debug]", {
+    countryField: profile?.country_field,
+    mapped: countryName(profile?.country_field),
+    });
     if (isLoading) {
         return (
             <div className="flex-center pt-32">
