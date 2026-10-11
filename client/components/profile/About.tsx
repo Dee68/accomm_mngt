@@ -7,6 +7,7 @@ import { ProfileItem } from "./ProfileItem";
 import { BadgeCheck, Briefcase, CalendarDays, Contact, Home, Hotel, Map, MapPinIcon, MapPinnedIcon, Star, UserRoundCheck } from "lucide-react";
 import { capitalizeFirstLetter, formatDate } from "@/utils";
 import ProtectedRoute from "../shared/ProtectedRoutes";
+import { countryName } from "@/lib/countries";
 
 function AboutContent(){
     const {data,isLoading} = useGetUserProfileQuery();
@@ -47,7 +48,7 @@ function AboutContent(){
                     <ProfileItem 
                     icon={<Map className="tab-icon"/>} 
                     label="Country" 
-                    value={capitalizeFirstLetter(profile?.country_of_origin) || ""}
+                    value={capitalizeFirstLetter(countryName(profile?.country_field))}
                     />
                     <ProfileItem 
                     icon={<MapPinnedIcon className="tab-icon"/>} 

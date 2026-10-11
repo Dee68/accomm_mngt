@@ -385,7 +385,7 @@ export interface Profile {
   username: string;
   full_name: string;
   gender: "male" | "female";
-  country_of_origin: string;
+  country_field: string;
   city_of_origin: string;
   bio?: string;
   occupation: Occupation;
@@ -463,7 +463,7 @@ export interface ProfileData {
   username: string;
   gender: "male" | "female";
   bio?: string;
-  country_of_origin: string;
+  country_field: string;
   city_of_origin: string;
   occupation: Occupation;
   phone_number: string;

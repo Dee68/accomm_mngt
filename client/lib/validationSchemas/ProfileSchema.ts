@@ -11,7 +11,7 @@ export const profileSchema = z.object({
         "painter",
         "roofer",
         "tenant"]),
-    country_of_origin:z.string().min(1,"Country of origin is required."),
+    country_field:z.string().min(1,"Country of origin is required."),
     city_of_origin:z.string().min(1,"City of origin is required."),
     bio:z.string().optional(),
     first_name:z.string().min(1,"First name is required."),
