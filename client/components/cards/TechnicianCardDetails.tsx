@@ -1,21 +1,22 @@
 import { capitalizeFirstLetter, formatDate } from "@/utils";
 import { Briefcase, CalendarDays, Map, Star } from "lucide-react";
+import { countryName } from "@/lib/countries";
 
 interface TechnicianDetailsProps {
-    country_of_origin: string;
+    country_field: string;
     occupation: string;
     date_joined: string;
     average_rating: number
 }
 
 
-export default function TechnicianCardDetails({country_of_origin,occupation,date_joined,average_rating}:TechnicianDetailsProps){
+export default function TechnicianCardDetails({country_field,occupation,date_joined,average_rating}:TechnicianDetailsProps){
     return (
         <div className="space-y-2">
             <p className="flex items-center space-x-2">
                 <Map className="card-icon" />
                 <span className="tab-font">Country of Origin:</span>
-                <span className="tab-font">{country_of_origin}</span>
+                <span className="tab-font">{countryName(country_field)}</span>
             </p>
             <p className="flex items-center space-x-2">
                 <Briefcase className="card-icon" />

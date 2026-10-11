@@ -58,7 +58,7 @@ function TenantCardContent(){
                                     <div>
                                         <TenantInfo 
                                             label='Country of Origin' 
-                                            value={tenant.country_of_origin} 
+                                            value={tenant.country_field} 
                                             icon={Map} 
                                         />
                                         <TenantInfo 
