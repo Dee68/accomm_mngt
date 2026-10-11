@@ -1,47 +1,65 @@
 "use client";
 
-import { Control, Controller } from "react-hook-form";
+import { countryOptions } from "@/constants";         // or from @/lib/countries
+import { useGetUserProfileQuery } from "@/lib/redux/features/users/usersApiSlice";
 import { TProfileSchema } from "@/lib/validationSchemas";
-import { COUNTRY_OPTIONS } from "@/lib/countries";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import Select from "react-select";
+import { Map } from "lucide-react";
+import dynamic from "next/dynamic";
+import React, { useEffect } from "react";
+import { Control, Controller, UseFormSetValue } from "react-hook-form";
+import customStyles from "../selectStyles";
+
+const ClientOnly = dynamic<{ children: React.ReactNode }>(
+    () => Promise.resolve(({ children }) => <>{children}</>),
+    { ssr: false }
+);
 
 interface CountrySelectFieldProps {
+    setValue: UseFormSetValue<TProfileSchema>;
     control: Control<TProfileSchema>;
 }
 
-export default function CountrySelectField({ control }: CountrySelectFieldProps) {
+export default function CountrySelectField({
+    setValue,
+    control,
+}: CountrySelectFieldProps) {
+    const { data: profileData } = useGetUserProfileQuery();
+    const profile = profileData;
+
+    useEffect(() => {
+        if (profile?.country_field) {
+            setValue("country_field", profile.country_field);
+        }
+    }, [profile, setValue]);
+
     return (
-        <div className="flex flex-col gap-1">
-            <label className="h4-semibold dark:text-babyPowder">
+        <div>
+            <label htmlFor="country_field" className="h4-semibold dark:text-babyPowder">
                 Country of Origin
             </label>
-            <Controller
-                name="country_field"
-                control={control}
-                render={({ field }) => (
-                    <Select
-                        value={field.value ?? ""}
-                        onValueChange={field.onChange}
-                    >
-                        <SelectTrigger className="dark:border-platinum">
-                            <SelectValue placeholder="Select a country" />
-                        </SelectTrigger>
-                        <SelectContent className="max-h-64">
-                            {COUNTRY_OPTIONS.map(({ code, name }) => (
-                                <SelectItem key={code} value={code}>
-                                    {name}
-                                </SelectItem>
-                            ))}
-                        </SelectContent>
-                    </Select>
-                )}
-            />
+            <div className="mt-1 flex items-center space-x-3">
+                <Map className="dark:text-babyPowder size-8" />
+                <ClientOnly>
+                    <Controller
+                        control={control}
+                        name="country_field"
+                        render={({ field }) => (
+                            <Select
+                                className="mt-1 w-full"
+                                {...field}
+                                options={countryOptions}
+                                value={countryOptions.find(
+                                    (option) => option.value === field.value
+                                )}
+                                onChange={(option) => field.onChange(option?.value)}
+                                instanceId="country-select"
+                                styles={customStyles}
+                            />
+                        )}
+                    />
+                </ClientOnly>
+            </div>
         </div>
     );
 }
