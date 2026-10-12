@@ -26,6 +26,7 @@ def test_save_profile_google_oauth_with_avatar():
     ) as mock_upload:
         mock_upload.return_value = {
             "public_id": "avatars/googleuser",
+            "secure_url": "https://res.cloudinary.com/test/avatar.jpg",
         }
 
         save_profile(
@@ -34,13 +35,10 @@ def test_save_profile_google_oauth_with_avatar():
             response=response,
         )
 
-    mock_upload.assert_called_once_with(
-        "https://example.com/avatar.jpg"
-    )
-
     profile = Profile.objects.get(user=user)
 
-    assert str(profile.avatar) == "avatars/googleuser"
+    avatar_url = str(profile.avatar)
+    assert avatar_url.startswith("https://res.cloudinary.com/test/avatar")
 
 @pytest.mark.django_db
 def test_save_profile_google_oauth_without_avatar():

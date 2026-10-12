@@ -1,5 +1,5 @@
 # Accommodation Center
-**Live demo:** https://my-deployment-url.com
+**Live demo:** https://dimie.dev
 
 A full-stack platform for managing residential buildings. Tenants are
 assigned to apartments, maintenance issues are tracked from report to

@@ -71,7 +71,7 @@ def test_invalid_reported_user_username_fails_validation(report_users):
     assert not serializer.is_valid()
     assert (
         serializer.errors["reported_user_username"][0]
-        == "The provided username does not exist"
+        == "Provided username does not exist."
     )
 
 

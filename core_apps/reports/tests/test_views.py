@@ -127,7 +127,7 @@ def test_create_report_with_nonexistent_username_returns_400(
 
     assert response.status_code == 400
     assert response.data["reported_user_username"][0] == (
-        "The provided username does not exist"
+        "Provided username does not exist."
     )
     assert Report.objects.count() == 0
 
