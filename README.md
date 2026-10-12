@@ -1,5 +1,5 @@
 # Accommodation Center
-**[Live demo](https://dimie.dev)** 
+[Live demo](https://dimie.dev)
 
 A full-stack platform for managing residential buildings. Tenants are
 assigned to apartments, maintenance issues are tracked from report to
@@ -20,6 +20,7 @@ other. Built with Django, Next.js, PostgreSQL, and Celery.
 - Rate technicians after a service
 
 ![Accommodation Center login user](docs/screenshots/login-user.webp)
+![Accommodation Center Email activation](docs/screenshots/activation.webp)
 
 **For technicians**
 - Sign in and see issues assigned to them
@@ -37,7 +38,7 @@ other. Built with Django, Next.js, PostgreSQL, and Celery.
 
 ![Accommodation Center Admin Interface](docs/screenshots/admin-interface.webp)
 
-![Accommodation Center Email activation](docs/screenshots/activation.webp)
+
 
 ![Accommodation Center Tenant Report Email](docs/screenshots/report.webp)
 ![Accommodation Center Tenant Warning Email](docs/screenshots/warning.webp)
@@ -49,9 +50,9 @@ other. Built with Django, Next.js, PostgreSQL, and Celery.
 | Backend | Django 4.2, Django REST Framework, PostgreSQL |
 | Frontend | Next.js, TypeScript, Tailwind CSS, shadcn/ui |
 | Authentication | JWT in HttpOnly cookies, Google OAuth |
-| Background tasks | Celery, Celerybeat, Redis, Flower |
-| Email | Django templates, CeleryEmailBackend, Mailpit (local) |
-| Infrastructure | Docker, nginx |
+| Background tasks | Celery, Celerybeat, Redis(Flower for local monitoring) |
+| Email | Django templates, CeleryEmailBackend, Mailpit (local), django-anymail + Resend (production) |
+| Infrastructure | Docker + nginx (local), Railway (production) |
 | API documentation | DRF Spectacular (Swagger, ReDoc) |
 | Testing | pytest, pytest-django (333 tests) |
 
@@ -90,8 +91,6 @@ Once the containers are healthy, the application is available at:
 
 ## Running tests
 
-The endpoint surface is covered by the pytest suite — see
-[Running tests](#running-tests). To run just the API tests:
 
 ```bash
 docker compose -f local.yml exec api pytest core_apps/ -v
@@ -103,18 +102,18 @@ seconds.
 
 ## Architecture
 
-The application runs as a set of Docker services behind an nginx
-reverse proxy:
+### Local development
 
-- **api** — Django application server
-- **client** — Next.js frontend
-- **postgres** — PostgreSQL database
-- **redis** — Celery broker and result backend
-- **celeryworker** — background task execution
-- **celerybeat** — scheduled tasks (nightly reputation recalculation)
-- **flower** — task monitoring UI
-- **mailpit** — local SMTP capture for development
-- **nginx** — reverse proxy in front of the api and client
+Nine Docker services behind an nginx reverse proxy: `api`, `client`,
+`postgres`, `redis`, `celeryworker`, `celerybeat`, `flower`, `mailpit`,
+`nginx`.
+
+### Production (Railway)
+
+Three deployable services (`api`, `client`, `celery_workers`) plus managed
+Postgres and Redis. No nginx, no Flower, no Mailpit — Railway
+terminates TLS and routes by hostname, and Mailpit's role is taken over
+by Resend, which receives outbound email through `django-anymail`.
 
 Emails are sent through Celery using `CeleryEmailBackend`, so they don't
 block the request cycle. In development, Mailpit intercepts every
@@ -153,6 +152,19 @@ COOKIE_SECURE=False
 REDIRECT_URIS=http://localhost:8080
 ```
 
+The above are local development values. Production additionally requires:
+
+```env
+RESEND_API_KEY=your-resend-api-key
+ANYMAIL_RESEND_API_KEY=${RESEND_API_KEY}
+CORS_ALLOWED_ORIGINS=https://dimie.dev
+CSRF_TRUSTED_ORIGINS=https://dimie.dev,https://api.dimie.dev
+SESSION_COOKIE_SAMESITE=None
+SESSION_COOKIE_SECURE=True
+COOKIE_SAMESITE=None
+COOKIE_SECURE=True
+```
+
 ## Project structure
 
 ```
@@ -169,6 +181,7 @@ accomm_mngt/
 │   │   ├── reports/           # Moderation reports
 │   │   └── users/             # Custom user model
 │   ├── requirements/
+    ├── manage.py  
 │   ├── local.yml              # Docker Compose for development
 │   └── Makefile
 └── client/                    # Next.js frontend
@@ -178,6 +191,29 @@ accomm_mngt/
     └── hooks/                 # Custom React hooks
 ```
 
+## Deployment
+
+The application is deployed on Railway:
+
+- **api** — Django, gunicorn, connected to managed Postgres and Redis
+- **client** — Next.js, deployed from the same repository
+- **celery_workers** — Celery worker (see `workers.sh`)
+
+External services connected in production:
+
+- **Cloudinary** — avatar storage, keeping the container stateless
+- **Resend via django-anymail** — transactional email delivery
+- **Google OAuth** — sign-in with Google
+
+Environment variables are set per-service in Railway's dashboard. The
+production `DJANGO_SETTINGS_MODULE` is `config.settings.production`.
+
+
+![Accommodation Center Railway Deployment Dashboard](docs/screenshots/railway-dashboard.webp)
+
+
 ## License
 
-This project is licensed for educational and portfolio purposes.
+This project is licensed for educational and portfolio purposes. You
+are welcome to read, clone, and learn from the code. Commercial use
+and republishing as your own work are not permitted.
