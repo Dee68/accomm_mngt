@@ -1,5 +1,5 @@
 # Accommodation Center
-**Live demo:** https://dimie.dev
+**[Live demo](https://dimie.dev)** 
 
 A full-stack platform for managing residential buildings. Tenants are
 assigned to apartments, maintenance issues are tracked from report to
@@ -19,11 +19,14 @@ other. Built with Django, Next.js, PostgreSQL, and Celery.
 - Bookmark and vote on posts
 - Rate technicians after a service
 
+![Accommodation Center login user](docs/screenshots/login-user.webp)
+
 **For technicians**
 - Sign in and see issues assigned to them
 - Update the status of assigned issues
 - Browse the community forum
 
+![Accommodation Center Post forum](docs/screenshots/post-forum.webp)
 **For administrators**
 - Full Django admin with filters, search, and bulk actions
 - Manage apartments, tenants, issues, and technicians
@@ -31,6 +34,13 @@ other. Built with Django, Next.js, PostgreSQL, and Celery.
 - Monitor background tasks via Flower
 - Review and act on user reports
 - Moderate users (banned after five reports, with automatic account deactivation)
+
+![Accommodation Center Admin Interface](docs/screenshots/admin-interface.webp)
+
+![Accommodation Center Email activation](docs/screenshots/activation.webp)
+
+![Accommodation Center Tenant Report Email](docs/screenshots/report.webp)
+![Accommodation Center Tenant Warning Email](docs/screenshots/warning.webp)
 
 ## Stack
 
@@ -110,6 +120,10 @@ Emails are sent through Celery using `CeleryEmailBackend`, so they don't
 block the request cycle. In development, Mailpit intercepts every
 outbound message. In production, the SMTP backend points at a
 transactional email provider through environment variables.
+
+![Accommodation Center Issue Report Email](docs/screenshots/issue.webp)
+![Accommodation Center Issue Assignment Email](docs/screenshots/assignment.webp)
+![Accommodation Center Issue Resolution Email](docs/screenshots/resolution.webp)
 
 ## Environment variables
 
