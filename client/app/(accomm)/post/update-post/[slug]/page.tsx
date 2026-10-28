@@ -1,29 +1,29 @@
 import UpdatePostForm from '@/components/forms/update-post/UpdatePostForm';
 import { AuthFormHeader } from '@/components/shared/forms/auth';
-import React from 'react'
+import React from 'react';
 
 interface UpdateParamsProps {
-    params:{
-        slug: string;
-    };
+  params: Promise<{
+    slug: string;
+  }>;
 }
 
-export default function UpdatePostPage({params}:UpdateParamsProps) {
+export default async function UpdatePostPage({ params }: UpdateParamsProps) {
+  const resolvedParams = await params;
+
   return (
     <div>
-      <AuthFormHeader 
-        title='Update Post' 
-        staticText='Want to go back?' 
-        linkText='Back to Posts' 
-        linkHref='/welcome' 
-        />
-        <div className='mt-7 sm:mx-auto sm:w-full sm:max-w-[480px]'>
-            <div className='bg-lightGrey dark:bg-deepBlueGrey rounded-xl px-6 py-12 shadow sm:rounded-lg sm:px-12 md:rounded-3xl'>
-                <div className='bg-lightGrey dark:bg-deepBlueGrey rounded-xl px-6 py-12 shadow sm:rounded-lg sm:px-12 md:rounded-3xl'>
-                    <UpdatePostForm params={params} />
-                </div>
-            </div>
+      <AuthFormHeader
+        title="Update Post"
+        staticText="Want to go back?"
+        linkText="Back to Posts"
+        linkHref="/welcome"
+      />
+      <div className="mt-7 sm:mx-auto sm:w-full sm:max-w-[480px]">
+        <div className="bg-lightGrey dark:bg-deepBlueGrey rounded-xl px-6 py-12 shadow sm:rounded-lg sm:px-12 md:rounded-3xl">
+          <UpdatePostForm params={resolvedParams} />
         </div>
+      </div>
     </div>
-  )
+  );
 }

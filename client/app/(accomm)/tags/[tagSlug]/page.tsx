@@ -7,15 +7,16 @@ export const metadata: Metadata = {
 }
 
 interface SlugParamsProps {
-    params:{
+    params:Promise<{
         tagSlug: string;
-    }
+    }>;
 }
 
-export default function TagPostsPage({params}: SlugParamsProps) {
+export default async function TagPostsPage({params}: SlugParamsProps) {
+  const resolvedParams = await params;
   return (
     <>
-      <PostTagCard  params={params}/>
+      <PostTagCard  params={resolvedParams}/>
     </>
   )
 }
