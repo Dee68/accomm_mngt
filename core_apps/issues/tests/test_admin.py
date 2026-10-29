@@ -115,7 +115,7 @@ def test_assignment_status_filter_unassigned(issue_users, apartment):
 
     filter_instance = AssignmentStatusFilter(
         request=None,
-        params={"assigned": "unassigned"},
+        params={"assigned": ["unassigned"]},
         model=Issue,
         model_admin=None,
     )
@@ -132,7 +132,7 @@ def test_assignment_status_filter_assigned(issue):
 
     filter_instance = AssignmentStatusFilter(
         request=None,
-        params={"assigned": "assigned"},
+        params={"assigned": ["assigned"]},
         model=Issue,
         model_admin=None,
     )
