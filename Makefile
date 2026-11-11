@@ -36,3 +36,14 @@ mailpit-volume:
 
 apartment-db:
 	docker compose -f local.yml exec postgres psql --username=apigolden --dbname=apartment
+
+build-client:
+	docker compose -f local.yml up --build -d client
+
+tsc-client:
+	docker compose -f local.yml exec client npx tsc --noEmit
+
+build-prod-client:
+	docker compose -f local.yml stop client
+	docker compose -f local.yml run --rm client npm run build
+	docker compose -f local.yml start client
