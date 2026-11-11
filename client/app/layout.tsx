@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import React from "react";
+import { QueryProvider } from '@/providers/query-provider';
 import { openSans, robotoSlab } from "@/lib/fonts";
 import { ThemeProvider } from "@/components/theme-provider";
 import ReduxProvider from "@/lib/redux/provider";
@@ -22,6 +23,7 @@ export default function RootLayout({
       <body className={`${openSans.variable} ${robotoSlab.variable}`}>
         <Toast />
         <ReduxProvider>
+        <QueryProvider>
           <PersistAuth />
         {/* ThemeProvider inside body, but modifies <html> since attribute="class" */}
         <ThemeProvider 
@@ -31,6 +33,7 @@ export default function RootLayout({
         disableTransitionOnChange>
           {children}
         </ThemeProvider>
+        </QueryProvider>
         </ReduxProvider>
       </body>
     </html>

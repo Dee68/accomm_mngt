@@ -3,9 +3,10 @@
 import React from 'react'
 import { HomeModernIcon } from '@heroicons/react/24/solid'
 import { usePathname } from 'next/navigation';
-import { Sheet, SheetClose, SheetContent, SheetFooter, SheetTrigger } from '@/components/ui/sheet';
+import { Sheet, SheetClose, SheetContent, SheetFooter, SheetTrigger, SheetTitle  } from '@/components/ui/sheet';
 import Link from 'next/link';
 import Image from 'next/image';
+import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { Button } from '@/components/ui/button';
 import { useAuthNavigation } from '@/hooks';
 
@@ -45,6 +46,9 @@ export default function MobileNavbar() {
             />
       </SheetTrigger>
       <SheetContent side='left' className='bg-baby_rich border-none'>
+        <VisuallyHidden asChild>
+        <SheetTitle>Navigation menu</SheetTitle>
+        </VisuallyHidden>
         <Link href="/" className='flex items-center gap-1'>
         <HomeModernIcon className='mr-2 size-11 text-lime-500'/>
         <p className='h2-bold text-baby_veryBlack'>Accommodation <span className='text-lime-500'> Center </span></p>
