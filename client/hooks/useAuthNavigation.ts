@@ -1,6 +1,6 @@
 // hooks/useAuthNavigation.ts
 import { leftNavLinks } from '@/constants';
-import { useMe, useLogout } from '@/lib/query/use-auth';
+import { useLogout } from '@/lib/query/use-auth';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { extractErrorMessage } from '@/utils';
 import { useRouter } from 'next/navigation';
@@ -14,7 +14,7 @@ const TECHNICIAN_OCCUPATIONS = [
 export function useAuthNavigation() {
   const router = useRouter();
   const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
-  const { data: user } = useMe();
+  const user = useAuthStore((s) => s.user);        // ← read user from store, not useMe
   const logoutMutation = useLogout();
 
   const occupation = user?.occupation;

@@ -1,23 +1,24 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAppSelector } from "@/lib/redux/hooks/typedHooks";
-import { useGetUserQuery } from "@/lib/redux/features/auth/authApiSlice";
-import Spinner from "@/components/shared/Spinner";
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/stores/auth-store';
+import Spinner from '@/components/shared/Spinner';
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const router = useRouter();
-  const { isAuthenticated } = useAppSelector((state) => state.auth);
-  const { isLoading, isError } = useGetUserQuery();
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  const isHydrated = useAuthStore((s) => s.isHydrated);
 
   useEffect(() => {
-    if (!isLoading && isError) {
-      router.push("/login");
+    // Only redirect if we have checked the auth state (hydrated) and we are NOT logged in.
+    if (isHydrated && !isAuthenticated) {
+      router.replace('/login');
     }
-  }, [isLoading, isError, router]);
+  }, [isHydrated, isAuthenticated, router]);
 
-  if (isLoading) {
+  // While PersistAuth is fetching /me, show a spinner
+  if (!isHydrated) {
     return (
       <div className="flex-center pt-32">
         <Spinner size="xl" />
@@ -25,8 +26,12 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
     );
   }
 
-  if (!isAuthenticated) return null;
+  // If hydrated and not authenticated, show nothing while the redirect happens
+  if (!isAuthenticated) {
+    return null;
+  }
 
+  // If hydrated and authenticated, render the page
   return <>{children}</>;
 }
 

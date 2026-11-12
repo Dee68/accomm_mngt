@@ -50,7 +50,7 @@ THIRD_PARTY_APPS = ['rest_framework',
                     'social_django',
                     'taggit',
                     'django_filters',
-                    #'djcelery_email',
+                    'djcelery_email',
                     'cloudinary',
                     'django_celery_beat',
                     'rest_framework_simplejwt.token_blacklist',
@@ -182,6 +182,7 @@ CELERY_RESULT_BACKEND = getenv("CELERY_RESULT_BACKEND")
 CELERY_ACCEPT_CONTENT = ["application/json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
+CELERY_IMPORTS = ("djcelery_email.tasks",)
 CELERY_RESULT_BACKEND_MAX_RETRIES = 10
 
 CELERY_TASK_SEND_SENT_EVENT = True

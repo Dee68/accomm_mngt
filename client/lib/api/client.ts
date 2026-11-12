@@ -7,6 +7,10 @@ const mutex = new Mutex();
 export const api = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
+  headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json',
+  },
 });
 
 // ── Reauth interceptor — mirrors baseQueryWithReauth from baseApiSlice.ts ──
@@ -51,33 +55,39 @@ api.interceptors.response.use(
   },
 );
 
-// ── Typed helpers. All DRF responses are { data: … }; unwrap once here. ──
+// Safely handles both { data: T } and flat T responses.
+function unwrap<T>(data: any): T {
+  if (data && typeof data === 'object' && 'data' in data) {
+    return data.data as T;
+  }
+  return data as T;
+}
+
 export async function apiGet<T>(url: string, params?: Record<string, unknown>): Promise<T> {
-  const { data } = await api.get<{ data: T }>(url, { params });
-  return data.data;
+  const { data } = await api.get(url, { params });
+  return unwrap<T>(data);
 }
 
 export async function apiPost<T, B = unknown>(url: string, body?: B): Promise<T> {
-  const { data } = await api.post<{ data: T }>(url, body);
-  return data.data;
+  const { data } = await api.post(url, body);
+  return unwrap<T>(data);
 }
 
-// For endpoints needing custom headers (e.g. social auth → form-urlencoded).
 export async function apiPostWithConfig<T, B = unknown>(
   url: string,
   body: B | undefined,
   config: AxiosRequestConfig,
 ): Promise<T> {
-  const { data } = await api.post<{ data: T }>(url, body, config);
-  return data.data;
+  const { data } = await api.post(url, body, config);
+  return unwrap<T>(data);
 }
 
 export async function apiPatch<T, B = unknown>(url: string, body?: B): Promise<T> {
-  const { data } = await api.patch<{ data: T }>(url, body);
-  return data.data;
+  const { data } = await api.patch(url, body);
+  return unwrap<T>(data);
 }
 
 export async function apiDelete<T>(url: string): Promise<T> {
-  const { data } = await api.delete<{ data: T }>(url);
-  return data.data;
+  const { data } = await api.delete(url);
+  return unwrap<T>(data);
 }

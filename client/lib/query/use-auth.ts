@@ -32,26 +32,23 @@ export function useMe() {
 //   - no invalidatesTags        → no invalidation
 
 export function useLogin() {
-  const qc = useQueryClient();
   return useMutation({
     mutationFn: (body: LoginUserData) => authApi.login(body),
-    onSuccess: async () => {
-      // RTK did invalidatesTags: ["User"] → /me refetched. Mirror exactly.
-      await qc.invalidateQueries({ queryKey: keys.user.all });
+    onSuccess: () => {
+      // Force a full page reload. This guarantees the new HttpOnly cookie
+      // is picked up by PersistAuth on the fresh page load.
+      window.location.href = '/';
     },
   });
 }
 
 export function useLogout() {
-  const qc = useQueryClient();
   return useMutation({
     mutationFn: authApi.logout,
     onSuccess: () => {
-      // RTK did invalidatesTags: ["User"]. We do better: drop the cache entirely
-      // (don't leave a stale /me for the next login to seed from) and clear the store.
-      qc.cancelQueries({ queryKey: keys.user.all });
-      qc.removeQueries({ queryKey: keys.user.all });
       useAuthStore.getState().setLogout();
+      // Force a full page reload to clear all state and hit /me fresh (which will 401)
+      window.location.href = '/login';
     },
   });
 }

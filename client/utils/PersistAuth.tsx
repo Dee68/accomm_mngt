@@ -1,21 +1,43 @@
-"use client";
+// utils/PersistAuth.tsx
+'use client';
 
-import { setAuth, setLogout } from "@/lib/redux/features/auth/authSlice";
-import { useAppDispatch } from "@/lib/redux/hooks/typedHooks";
-import { useGetUserQuery } from "@/lib/redux/features/auth/authApiSlice";
-import { useEffect } from "react";
+import { useEffect } from 'react';
+import { authApi } from '@/lib/api/auth';
+import { useAuthStore } from '@/lib/stores/auth-store';
+import { useQueryClient } from '@tanstack/react-query';
 
 export default function PersistAuth() {
-  const dispatch = useAppDispatch();
-  const { data: user, isLoading, isSuccess, isError } = useGetUserQuery();
+  const setAuth = useAuthStore((s) => s.setAuth);
+  const setLogout = useAuthStore((s) => s.setLogout);
+  const setHydrated = useAuthStore((s) => s.setHydrated);
+  const qc = useQueryClient();
 
   useEffect(() => {
-    if (isSuccess && user) {
-      dispatch(setAuth());
-    } else if (!isLoading && (isError || !user)) {
-      dispatch(setLogout());
-    }
-  }, [isSuccess, isLoading, isError, user, dispatch]);
+    let mounted = true;
+
+    authApi.me()
+      .then((user) => {
+        if (!mounted) return;
+        console.log('[PersistAuth] SUCCESS! Setting Auth for:', user.email);
+        setAuth(user);
+        // Sync with TanStack cache for any component using useMe()
+        qc.setQueryData(['user', 'me'], user);
+      })
+      .catch((error) => {
+        if (!mounted) return;
+        console.log('[PersistAuth] FAILED. Status:', error.response?.status);
+        console.log('[PersistAuth] ERROR BODY:', error.response?.data);
+        setLogout();
+        qc.removeQueries({ queryKey: ['user', 'me'] });
+      })
+      .finally(() => {
+        if (mounted) setHydrated();
+      });
+
+    return () => {
+      mounted = false;
+    };
+  }, [setAuth, setLogout, setHydrated, qc]);
 
   return null;
 }

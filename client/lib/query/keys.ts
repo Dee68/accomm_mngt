@@ -3,8 +3,13 @@
 export const keys = {
   user: {
     all: ['user'] as const,
+    lists: () => [...keys.user.all, 'list'] as const,
+    list: (filters?: Record<string, unknown>) =>
+      [...keys.user.lists(), filters ?? {}] as const,
     me: () => [...keys.user.all, 'me'] as const,
-    detail: (id: string) => [...keys.user.all, 'detail', id] as const,
+    profile: () => [...keys.user.all, 'profile'] as const,
+    details: () => [...keys.user.all, 'detail'] as const,
+    detail: (id: string) => [...keys.user.details(), id] as const,
   },
   apartments: {
     all: ['apartments'] as const,
