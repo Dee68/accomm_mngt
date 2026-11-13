@@ -2,7 +2,7 @@
 import { FormFieldComponent } from '@/components/shared/forms/FormFieldComponent';
 import Select  from 'react-select';
 import { priorityOptions, statusOptions } from '@/constants';
-import { useGetMyApartmentQuery } from '@/lib/redux/features/apartment/apartmentApiSlice';
+import { useMyApartment } from '@/lib/query/use-apartments';
 import { useReportIssueMutation } from '@/lib/redux/features/issues/IssueApiSlice';
 import { issueCreateSchema, TIssueCreateSchema } from '@/lib/validationSchemas';
 import { extractErrorMessage } from '@/utils';
@@ -33,7 +33,7 @@ type ApartmentResponse = {
   };
 };
 export default function CreateIssueForm() {
-    const { data } = useGetMyApartmentQuery() as { data?: ApartmentResponse };
+    const { data } = useMyApartment() as { data?: ApartmentResponse };
     const apartment = data?.data;
 
 

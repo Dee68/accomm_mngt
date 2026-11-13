@@ -30,6 +30,14 @@ EMAIL_PORT = getenv("EMAIL_PORT")
 DEFAULT_FROM_EMAIL = getenv("DEFAULT_FROM_EMAIL")
 DOMAIN = getenv("DOMAIN")
 
+REST_FRAMEWORK = {
+    **REST_FRAMEWORK,
+    "DEFAULT_THROTTLE_RATES": {
+        "anon": "10000/day",
+        "user": "50000/day",
+    },
+}
+
 LOGGING = {
     "version":1,
     "disable_existing_loggers":False,
