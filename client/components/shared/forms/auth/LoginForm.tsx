@@ -26,18 +26,18 @@ export default function LoginForm() {
   });
 
   const onSubmit = async (values: z.infer<typeof loginUserSchema>) => {
-    try {
-      await loginMutation.mutateAsync(values);
-      // useLogin's onSuccess forces a /me refetch → PersistAuth fires → Zustand.setAuth
-      // No need for dispatch(setAuth()) — the store is updated by the new auth pipeline.
-      toast.success("Login Successful");
-      router.push("/welcome");
-      reset();
-    } catch (error) {
-      const errorMessage = extractErrorMessage(error);
-      toast.error(errorMessage || "An error occurred");
-    }
-  };
+  try {
+    await loginMutation.mutateAsync(values);
+    toast.success("Login Successful");
+    reset();
+    router.push("/welcome");
+    // DO NOT call router.push("/welcome") here. 
+    // Let useRedirectIfAuthenticated handle it once isHydrated is true.
+  } catch (error) {
+    const errorMessage = extractErrorMessage(error);
+    toast.error(errorMessage || "An error occurred");
+  }
+};
 
   return (
     <main>

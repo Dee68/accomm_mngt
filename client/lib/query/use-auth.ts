@@ -32,12 +32,18 @@ export function useMe() {
 //   - no invalidatesTags        → no invalidation
 
 export function useLogin() {
+  const qc = useQueryClient();
   return useMutation({
     mutationFn: (body: LoginUserData) => authApi.login(body),
-    onSuccess: () => {
-      // Force a full page reload. This guarantees the new HttpOnly cookie
-      // is picked up by PersistAuth on the fresh page load.
-      window.location.href = '/';
+    onSuccess: async () => {
+      // 1. Fetch the user data immediately
+      const user = await authApi.me();
+      
+      // 2. Synchronously set Zustand state BEFORE the redirect happens
+      useAuthStore.getState().setAuth(user);
+      
+      // 3. Sync the TanStack cache so any `useMe()` hooks are happy
+      qc.setQueryData(keys.user.me(), user);
     },
   });
 }
@@ -48,7 +54,7 @@ export function useLogout() {
     onSuccess: () => {
       useAuthStore.getState().setLogout();
       // Force a full page reload to clear all state and hit /me fresh (which will 401)
-      window.location.href = '/login';
+      window.location.href = '/';
     },
   });
 }

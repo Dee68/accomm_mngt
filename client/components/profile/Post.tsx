@@ -1,18 +1,18 @@
 "use client";
 
 import { TabsContent } from "@/components/ui/tabs";
-import { useGetMyPostsQuery } from "@/lib/redux/features/posts/postApiSlice";
+import { useMyPosts } from '@/lib/query/use-posts';
 import PostCard from "../cards/PostCard";
 import Spinner from "@/components/shared/Spinner";
 
 export default function Post() {
-  const { data, isLoading, error } = useGetMyPostsQuery();
+  const { data, isPending, error } = useMyPosts();
 
   // Unwrap the GenericJSONRenderer envelope
   // Response shape: { status_code, object_label, data: { count, results } }
   const posts = data?.results ?? [];
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <TabsContent value="posts">
         <div className="flex justify-center p-8">

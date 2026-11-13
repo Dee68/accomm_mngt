@@ -1,18 +1,21 @@
-// hooks/useRedirectIfAuthenticated.ts
 import { useAuthStore } from "@/lib/stores/auth-store";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
 const useRedirectIfAuthenticated = () => {
   const router = useRouter();
-  // Read from our new Zustand store instead of Redux
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isHydrated = useAuthStore((state) => state.isHydrated);
+
+  console.log('[useRedirectIfAuthenticated]', { isAuthenticated, isHydrated });
 
   useEffect(() => {
-    if (isAuthenticated) {
-      router.push("/welcome");
+    console.log('[useRedirectIfAuthenticated] effect fired', { isAuthenticated, isHydrated });
+    if (isHydrated && isAuthenticated) {
+      console.log('[useRedirectIfAuthenticated] REDIRECTING TO /welcome');
+      router.replace("/welcome");
     }
-  }, [isAuthenticated, router]);
+  }, [isAuthenticated, isHydrated, router]);
 };
 
 export default useRedirectIfAuthenticated;

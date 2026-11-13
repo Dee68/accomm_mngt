@@ -1,13 +1,13 @@
 "use client";
 
-import { useGetPopularTagsQuery, useGetTopPostsQuery } from "@/lib/redux/features/posts/postApiSlice";
+import { useTopPosts, usePopularTags } from '@/lib/query/use-posts';
 import { normalizeResults } from "@/utils/normalizeApiResponse";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 export default function RightNavbar() {
-  const { data: topData, isLoading: topLoading } = useGetTopPostsQuery();
-  const { data: tagData, isLoading: tagsLoading, isError: tagsError } = useGetPopularTagsQuery();
+  const { data: topData, isPending: topLoading } = useTopPosts();
+  const { data: tagData, isPending: tagsLoading, isError: tagsError } = usePopularTags();
 
 
   // normalize top posts (supports topData.results or topData.data.results)

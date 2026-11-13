@@ -1,6 +1,6 @@
 "use client";
 
-import { useGetPostsByTagQuery } from "@/lib/redux/features/posts/postApiSlice";
+import { usePostsByTag } from '@/lib/query/use-posts';
 import Spinner from "../shared/Spinner";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { formatDate, getRepliesText, getViewText } from "@/utils";
@@ -17,8 +17,8 @@ interface SlugParamsProps {
 }
 
 export default function PostTagCard({params}: SlugParamsProps) {
-    const { data, isLoading} = useGetPostsByTagQuery(params.tagSlug);
-    if (isLoading) {
+    const { data, isPending} = usePostsByTag(params.tagSlug);
+    if (isPending) {
         return (
             <div className="flex-center pt-32">
                 <Spinner size="xl" />
