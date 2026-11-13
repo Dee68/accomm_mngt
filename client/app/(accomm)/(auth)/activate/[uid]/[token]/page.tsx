@@ -1,9 +1,9 @@
 
 "use client";
 
-import { useActivateUserMutation } from "@/lib/redux/features/auth/authApiSlice";
+import { useActivate } from "@/lib/query/use-auth";
 import { useRouter } from "next/navigation";
-import React, { use, useEffect } from "react";
+import React, { use, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 
 interface ActivationProps {
@@ -17,41 +17,43 @@ export default function ActivationPage({ params }: ActivationProps) {
   const { uid, token } = use(params);
   const router = useRouter();
 
-  const [activateUser, { isLoading, isError, error, isSuccess }] =
-    useActivateUserMutation();
+  const activate = useActivate();
+  const hasFired = useRef(false);
 
-  // Activate the account using the URL parameters.
+  // Fire the mutation once on mount.
   useEffect(() => {
-    activateUser({ uid, token });
-  }, [activateUser, uid, token]);
+    if (hasFired.current) return;
+    hasFired.current = true;
+    activate.mutate({ uid, token });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Handle success and failure after the request completes.
   useEffect(() => {
-    if (isSuccess) {
+    if (activate.isSuccess) {
       toast.success("Account successfully activated!");
       router.push("/login");
-    } else if (isError) {
-      console.error("Activation error:", JSON.stringify(error, null, 2));
+    } else if (activate.isError) {
+      console.error("Activation error:", JSON.stringify(activate.error, null, 2));
       toast.error("Failed to activate your account.");
     }
-  }, [isSuccess, isError, error, router]);
+  }, [activate.isSuccess, activate.isError, activate.error, router]);
 
   return (
     <div className="flex min-h-screen items-center justify-center">
       <div className="text-center">
         <h3 className="dark:text-platinum text-2xl font-robotoSlab font-bold text-gray-800 sm:text-4xl md:text-5xl">
-          {isLoading ? (
+          {activate.isPending ? (
             <div className="flex-center">
               <span className="mr-2">⏰</span>
               <span>Activating your account .... please wait.</span>
               <span className="ml-2">🥱</span>
             </div>
-          ) : isSuccess ? (
+          ) : activate.isSuccess ? (
             <div className="flex-center">
               <span className="mr-2">✅</span>
               <span>Account activated successfully!</span>
             </div>
-          ) : isError ? (
+          ) : activate.isError ? (
             <div className="flex-center">
               <span className="mr-2">❌</span>
               <span>Your account has already been activated....</span>
