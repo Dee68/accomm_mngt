@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useGetMyAssignedIssuesQuery } from "@/lib/redux/features/issues/IssueApiSlice";
+import { useMyAssignedIssues } from "@/lib/query/use-issues";
 import Spinner from "@/components/shared/Spinner";
 import { toast } from "react-toastify";
 import { useEffect } from "react";
@@ -30,7 +30,7 @@ const priorityStyles: Record<Issue["priority"], string> = {
 };
 
 export default function AssignedIssuesPage() {
-  const { data, isLoading, isError } = useGetMyAssignedIssuesQuery();
+  const { data, isPending, isError } = useMyAssignedIssues();
 
   useEffect(() => {
     if (isError) {
@@ -38,7 +38,7 @@ export default function AssignedIssuesPage() {
     }
   }, [isError]);
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="flex items-center justify-center pt-32">
         <Spinner size="xl" />

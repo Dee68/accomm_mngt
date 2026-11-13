@@ -1,5 +1,6 @@
 "use client";
-import { useGetMyAssignedIssuesQuery } from '@/lib/redux/features/issues/IssueApiSlice';
+
+import { useMyAssignedIssues } from '@/lib/query/use-issues';
 import React from 'react'
 import Spinner from '../shared/Spinner';
 import { TabsContent } from '../ui/tabs';
@@ -7,7 +8,7 @@ import IssueCard from '../cards/IssueCard';
 import ProtectedRoute from '../shared/ProtectedRoutes';
 
 function AssignedIssuesContent() {
-    const { data:assignedIssues, isLoading} = useGetMyAssignedIssuesQuery()
+    const { data:assignedIssues, isPending: isLoading} = useMyAssignedIssues()
     const myAssignedIssues = assignedIssues
 
     if (isLoading) {

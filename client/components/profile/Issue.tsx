@@ -1,5 +1,5 @@
 "use client";
-import { useGetMyIssuesQuery } from '@/lib/redux/features/issues/IssueApiSlice';
+import { useMyIssues } from '@/lib/query/use-issues';
 import React from 'react'
 import Spinner from '../shared/Spinner';
 import { TabsContent } from '../ui/tabs';
@@ -7,9 +7,8 @@ import IssueCard from '../cards/IssueCard';
 import ProtectedRoute from "../shared/ProtectedRoutes";
 
 function IssueContent() {
-    const { data,isLoading,error } = useGetMyIssuesQuery();
-    const myIssue = data
-    //console.log("Issues API response:", data);
+    const { data, isPending:isLoading,error } = useMyIssues();
+    const myIssue = data;
 
 
     if (isLoading) {

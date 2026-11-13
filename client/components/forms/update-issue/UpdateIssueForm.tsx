@@ -10,10 +10,7 @@ import { toast } from "react-toastify";
 import Spinner from "@/components/shared/Spinner";
 import { Button } from "@/components/ui/button";
 import { statusOptions } from "@/constants";
-import {
-  useGetSingleIssueQuery,
-  useUpdateIssueMutation,
-} from "@/lib/redux/features/issues/IssueApiSlice";
+import { useSingleIssue, useUpdateIssue } from "@/lib/query/use-issues";
 import { TIssueUpdateSchema } from "@/lib/validationSchemas";
 import { extractErrorMessage } from "@/utils";
 import customStyles from "../selectStyles";
@@ -32,9 +29,8 @@ interface UpdateParamsProps {
 export default function UpdateIssueForm({ params }: UpdateParamsProps) {
   const issueId = params.id;
 
-  const { data: issueResponse, isLoading: isLoadingIssue } =
-    useGetSingleIssueQuery(issueId);
-  const [updateIssue, { isLoading: isUpdating }] = useUpdateIssueMutation();
+  const { data: issue, isPending: isLoadingIssue } = useSingleIssue(issueId);
+  const updateIssue = useUpdateIssue();
   const router = useRouter();
 
   const {
@@ -46,17 +42,17 @@ export default function UpdateIssueForm({ params }: UpdateParamsProps) {
 
   // Populate the form with the current status once the issue loads
   useEffect(() => {
-    const currentStatus = issueResponse?.status;
+    const currentStatus = issue?.status;
     if (currentStatus) {
       reset({ status: currentStatus });
     }
-  }, [issueResponse, reset]);
+  }, [issue, reset]);
 
   const onSubmit = async (formValues: TIssueUpdateSchema) => {
     if (!issueId) return;
 
     try {
-      await updateIssue({ ...formValues, issueId }).unwrap();
+      await updateIssue.mutateAsync({ ...formValues, issueId });
       toast.success(
         "The Issue assigned to you has been updated. A confirmation email has been sent to the tenant"
       );
@@ -118,9 +114,9 @@ export default function UpdateIssueForm({ params }: UpdateParamsProps) {
         <Button
           type="submit"
           className="h4-semibold bg-eerieBlack dark:bg-pumpkin mt-2 w-full text-white"
-          disabled={isUpdating}
+          disabled={updateIssue.isPending}
         >
-          {isUpdating ? <Spinner size="sm" /> : `Update Status`}
+          {updateIssue.isPending ? <Spinner size="sm" /> : `Update Status`}
         </Button>
       </form>
     </main>
